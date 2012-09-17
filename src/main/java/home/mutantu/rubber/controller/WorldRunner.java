@@ -8,6 +8,7 @@ public class WorldRunner implements Runnable
 	RubberWorld world;
 	WorldFrame frame;
 	int pauseMilisec = 100;
+	private boolean running = true;
 	
 	public WorldRunner(RubberWorld world,WorldFrame frame)
 	{
@@ -17,15 +18,18 @@ public class WorldRunner implements Runnable
 	@Override
 	public void run()
 	{
-		try
+		while(running)
 		{
-			Thread.sleep(pauseMilisec);
+			try
+			{
+				Thread.sleep(pauseMilisec);
+			}
+			catch (InterruptedException e)
+			{
+			}
+			world.next();
+			frame.buildFrame(world);
 		}
-		catch (InterruptedException e)
-		{
-		}
-		world.next();
-		frame.buildFrame(world);
 	}
 
 }

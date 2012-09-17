@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class WorldFrame extends JFrame
 {
-	private static final int WIDTH = 400;
-    private static final int HEIGHT = 400;
+	private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
     
     RasterPanel drawingPanel;
     
