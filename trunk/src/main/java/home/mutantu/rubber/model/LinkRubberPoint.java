@@ -1,12 +1,13 @@
 package home.mutantu.rubber.model;
 
 
-public class LinkRubberPoint extends RubberPoint
+public class LinkRubberPoint
 {
 	public int distance;
-	public LinkRubberPoint(int index, int distance)
+	public RubberPoint point;
+	public LinkRubberPoint(RubberPoint point, int distance)
 	{
-		this.index = index;
+		this.point = point;
 		this.distance = distance;
 	}
 }

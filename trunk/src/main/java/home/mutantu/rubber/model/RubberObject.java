@@ -30,7 +30,7 @@ public class RubberObject
 			throw new IndexOutOfBoundsException();
 		}
 		
-		points.get(index1).addLink(index2,distance);
+		points.get(index1).addLink(points.get(index1),distance);
 	}
 
 	public boolean areLinked(int index1, int index2)
@@ -40,5 +40,14 @@ public class RubberObject
 			throw new IndexOutOfBoundsException();
 		}
 		return points.get(index1).isLinkedTo(index2);
+	}
+
+	public void next(RubberWorld rubberWorld)
+	{
+		for (Integer pointIndex : points.keySet())
+		{
+			
+		}
+		
 	}
 }
