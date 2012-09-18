@@ -12,6 +12,7 @@ public class RubberObjectTest
 	public void testAddPoint()
 	{
 		RubberObject obj = new RubberObject();
+		obj.addPoint();
 		assertEquals(1,obj.getPointCount());
 		obj.addPoint();
 		assertEquals(2,obj.getPointCount());
@@ -21,6 +22,7 @@ public class RubberObjectTest
 	public void testLinkPoints()
 	{
 		RubberObject obj = new RubberObject();
+		obj.addPoint();
 		obj.addPoint();
 		obj.linkPoints(0,1,10);
 		assertTrue(obj.areLinked(0,1));

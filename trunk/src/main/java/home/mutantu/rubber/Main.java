@@ -16,6 +16,7 @@ public class Main
 		RubberWorld world  = new RubberWorld();
 		RubberObject obj = new RubberObject();
 		obj.addPoint();
+		obj.addPoint();
 		obj.addPoint(100,110);
 		obj.linkPoints(0, 1, 10);
 		obj.linkPoints(0, 2, 10);
@@ -25,5 +26,4 @@ public class Main
 		WorldRunner runner = new WorldRunner(world, frame);
 		new Thread(runner).start();
 	}
-
 }
