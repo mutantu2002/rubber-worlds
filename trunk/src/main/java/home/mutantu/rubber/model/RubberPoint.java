@@ -9,7 +9,7 @@ public class RubberPoint
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);
-	public static final double FRICTION = 10000;
+	public static final double FRICTION = 100;
 	public static final double K=10;
 	public static final double dt=0.01;
 	
@@ -43,20 +43,22 @@ public class RubberPoint
 		for (LinkRubberPoint link : links)
 		{
 			double realDistance = Math.sqrt((t0.x-link.point.t0.x)*(t0.x-link.point.t0.x)+(t0.y-link.point.t0.y)*(t0.y-link.point.t0.y));
-			double force = K*(link.distance-realDistance)*(link.distance-realDistance)*(link.distance-realDistance);
+			double force = K*(link.distance-realDistance);//*(link.distance-realDistance)*(link.distance-realDistance);
 			forceX+=(t0.x-link.point.t0.x)/realDistance * force;
 			forceY+=(t0.y-link.point.t0.y)/realDistance * force;
 		}
 		double forceAfterFrictionX = 0;
 		double forceAfterFrictionY = 0;
-		if (FRICTION<forceX)
+		
+		//cand forta e foarte mica dar viteza mare, forta nu trebuie sa fie 0
+		if (FRICTION<Math.abs(forceX))
 		{
-			forceAfterFrictionX = forceX-Math.signum(t0.vx)*FRICTION;
+			forceAfterFrictionX = Math.signum(forceX)*( Math.abs(forceX)-FRICTION);
 		}
 		
-		if (FRICTION<forceY)
+		if (FRICTION<Math.abs(forceY))
 		{
-			forceAfterFrictionY = forceY-Math.signum(t0.vy)*FRICTION;
+			forceAfterFrictionY = Math.signum(forceY)*( Math.abs(forceY)-FRICTION);
 		}
 		
 		t1.vx= t0.vx + (forceAfterFrictionX)*dt;
