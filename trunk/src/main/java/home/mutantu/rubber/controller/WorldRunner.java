@@ -7,7 +7,7 @@ public class WorldRunner implements Runnable
 {
 	RubberWorld world;
 	WorldFrame frame;
-	int pauseMilisec = 100;
+	int pauseMilisec = 30;
 	private boolean running = true;
 	
 	public WorldRunner(RubberWorld world,WorldFrame frame)
@@ -28,6 +28,7 @@ public class WorldRunner implements Runnable
 			{
 			}
 			world.next();
+			world.flipCoordinates();
 			frame.buildFrame(world);
 		}
 	}

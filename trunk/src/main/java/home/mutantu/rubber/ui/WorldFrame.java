@@ -1,5 +1,7 @@
 package home.mutantu.rubber.ui;
 
+import home.mutantu.rubber.model.RubberObject;
+import home.mutantu.rubber.model.RubberPoint;
 import home.mutantu.rubber.model.RubberWorld;
 
 import javax.swing.JFrame;
@@ -24,7 +26,15 @@ public class WorldFrame extends JFrame
 
 	public void buildFrame(RubberWorld world)
 	{
-		
+		drawingPanel.empty();
+		for (RubberObject obj : world.getObjects())
+		{
+			for (RubberPoint point : obj.getPoints())
+			{
+				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y);
+			}
+		}
+		repaint();
 	}
 
 }

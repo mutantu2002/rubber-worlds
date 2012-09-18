@@ -6,6 +6,7 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.util.Arrays;
 
 import javax.swing.JPanel;
 
@@ -32,40 +33,35 @@ public class RasterPanel extends JPanel
 		int [] masks = {0xFF0000, 0xFF00, 0xff, 0xff000000};
 		
 		WritableRaster raster = Raster.createPackedRaster (buffer, width, height, width, masks, null);
-		ColorModel color_model = ColorModel.getRGBdefault ();
+		ColorModel color_model = ColorModel.getRGBdefault();
 		image = new BufferedImage (color_model,raster,false,null);
 
-	}
-
-
-	public void newFrame () 
-	{
-		int frame=0;
-	    int index = 0;
-	    byte mask =  (byte)(frame & 0xff);
-
-	    for (int y = 0; y < height; y++)
-	    {
-	        for (int x = 0; x < width; x++) 
-	        {
-	          int alpha = 255;
-	          int red =  (y * 255) / (width - 1);
-	          red = red & mask;
-
-	          int green =  (x * 255) / (height - 1);
-	          green = green & mask;
-
-	          int blue = 255 -  (255 * (x - width))/width;
-	          blue = blue & mask;
-
-	          pixels[index++] =  (255 << alpha) | (red << 16) | (green << 8) | blue;
-	       }
-	    }
-	    frame++;
 	}
 
 	public void paintComponent (Graphics g) 
 	{
 	    g.drawImage (image, 0, 0, this);
+	}
+
+	public void setPixel(int x, int y)
+	{
+		
+	}
+
+	public void empty()
+	{
+		Arrays.fill(pixels, 0xFF999999);
+	}
+
+
+	public void set4Pixels(int x, int y)
+	{
+		int maxIndex = height *width;
+		int index= width*y+x % maxIndex;
+		pixels[index] = 0xFF000000;
+		pixels[(index+1)%maxIndex] = 0xFF000000;
+		index= width*(y+1)+x % maxIndex;
+		pixels[index] = 0xFF000000;
+		pixels[(index+1)%maxIndex] = 0xFF000000;
 	}
 }
