@@ -3,9 +3,9 @@ package home.mutantu.rubber.model;
 
 public class LinkRubberPoint
 {
-	public int distance;
+	public double distance;
 	public RubberPoint point;
-	public LinkRubberPoint(RubberPoint point, int distance)
+	public LinkRubberPoint(RubberPoint point, double distance)
 	{
 		this.point = point;
 		this.distance = distance;

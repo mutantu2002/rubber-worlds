@@ -36,7 +36,7 @@ public class RubberObject
 		points.put(points.size(),point);
 	}
 
-	public void linkPoints(int index1, int index2, int distance)
+	public void linkPoints(int index1, int index2, double distance)
 	{
 		if (index1>=points.size() || index2>= points.size())
 		{
