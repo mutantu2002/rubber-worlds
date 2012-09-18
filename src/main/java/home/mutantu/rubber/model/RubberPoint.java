@@ -9,9 +9,10 @@ public class RubberPoint
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);
-	public static final double FRICTION = 100;
+	public static final double FRICTION = 0.0;
+	public static final double GRAVITY = 0.01;
 	public static final double K=10;
-	public static final double dt=0.01;
+	public static final double dt=0.007;
 	
 	List<LinkRubberPoint> links = new ArrayList<LinkRubberPoint>();
 	
@@ -36,36 +37,49 @@ public class RubberPoint
 		}
 		return false;
 	}
-	public void next()
+	public void next(RubberWorld rubberWorld)
 	{
 		double forceX=0;
 		double forceY=0;
 		for (LinkRubberPoint link : links)
 		{
 			double realDistance = Math.sqrt((t0.x-link.point.t0.x)*(t0.x-link.point.t0.x)+(t0.y-link.point.t0.y)*(t0.y-link.point.t0.y));
-			double force = K*(link.distance-realDistance);//*(link.distance-realDistance)*(link.distance-realDistance);
+			double force = K*(link.distance-realDistance)*Math.abs((link.distance-realDistance));//*(link.distance-realDistance);
+			if (realDistance==0)
+			{
+				realDistance=0.1;
+			}
 			forceX+=(t0.x-link.point.t0.x)/realDistance * force;
 			forceY+=(t0.y-link.point.t0.y)/realDistance * force;
-		}
-		double forceAfterFrictionX = 0;
-		double forceAfterFrictionY = 0;
-		
-		//cand forta e foarte mica dar viteza mare, forta nu trebuie sa fie 0
-		if (FRICTION<Math.abs(forceX))
-		{
-			forceAfterFrictionX = Math.signum(forceX)*( Math.abs(forceX)-FRICTION);
+			forceY+=GRAVITY;
 		}
 		
-		if (FRICTION<Math.abs(forceY))
-		{
-			forceAfterFrictionY = Math.signum(forceY)*( Math.abs(forceY)-FRICTION);
-		}
-		
-		t1.vx= t0.vx + (forceAfterFrictionX)*dt;
-		t1.vy= t0.vy + (forceAfterFrictionY)*dt;
+		t1.vx= t0.vx + (forceX - t0.vx*FRICTION)*dt;
+		t1.vy= t0.vy + (forceY - t0.vy*FRICTION)*dt;
 		
 		t1.x = t0.x + t1.vx*dt;
 		t1.y = t0.y + t1.vy*dt;
+		
+		if (t1.x<0)
+		{
+			t1.x=0;
+			t1.vx=0;
+		}
+		if (t1.y<0)
+		{
+			t1.y=0;
+			t1.vy=0;
+		}
+		if (t1.x>=rubberWorld.getWidth()-1)
+		{
+			t1.x=rubberWorld.getWidth()-2;
+			t1.vx=0;
+		}
+		if (t1.y>=rubberWorld.getHeight()-1)
+		{
+			t1.y=rubberWorld.getHeight()-2;
+			t1.vy=0;
+		}
 	}
 
 	public void flipCoordonates()

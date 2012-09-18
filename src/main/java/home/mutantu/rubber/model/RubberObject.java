@@ -36,6 +36,17 @@ public class RubberObject
 		points.put(points.size(),point);
 	}
 
+	public synchronized void addPoint(int x, int y, double vx, double vy)
+	{
+		RubberPoint point = new RubberPoint(points.size());
+		point.t0.x=x;
+		point.t0.y=y;
+		
+		point.t0.vx=vx;
+		point.t0.vy=vy;
+		points.put(points.size(),point);
+	}
+	
 	public void linkPoints(int index1, int index2, double distance)
 	{
 		if (index1>=points.size() || index2>= points.size())
@@ -60,7 +71,7 @@ public class RubberObject
 	{
 		for (Integer pointIndex : points.keySet())
 		{
-			points.get(pointIndex).next();
+			points.get(pointIndex).next(rubberWorld);
 		}
 	}
 	

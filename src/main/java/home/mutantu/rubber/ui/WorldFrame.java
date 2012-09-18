@@ -9,16 +9,18 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class WorldFrame extends JFrame
 {
-	private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+	private int width = 800;
+    private int height = 600;
     
     RasterPanel drawingPanel;
     
-    public WorldFrame()
+    public WorldFrame(int width, int height)
     {
-    	setSize(WIDTH, HEIGHT);
+    	this.width = width;
+    	this.height = height;
+    	setSize(this.width+10, this.height+50);
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	drawingPanel = new RasterPanel (WIDTH,HEIGHT);
+    	drawingPanel = new RasterPanel (this.width,this.height);
         add (drawingPanel);
         drawingPanel.init();
         setVisible(true);
@@ -36,5 +38,4 @@ public class WorldFrame extends JFrame
 		}
 		repaint();
 	}
-
 }

@@ -8,6 +8,6 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		new Thread(new WorldRunner(WorldFactory.createOneRectangleWorld(), new WorldFrame())).start();
+		new Thread(new WorldRunner(WorldFactory.createOneRectangleObjectWorld(200,50,20,10,10), new WorldFrame(800,600))).start();
 	}
 }
