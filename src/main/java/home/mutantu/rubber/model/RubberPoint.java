@@ -9,6 +9,7 @@ public class RubberPoint
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);
+	public static final double FRICTION = 10000;
 	public static final double K=10;
 	public static final double dt=0.01;
 	
@@ -19,7 +20,7 @@ public class RubberPoint
 		this.index=index;
 	}
 
-	public void addLink(RubberPoint point, int distance)
+	public void addLink(RubberPoint point, double distance)
 	{
 		links.add(new LinkRubberPoint(point, distance));
 	}
@@ -42,12 +43,24 @@ public class RubberPoint
 		for (LinkRubberPoint link : links)
 		{
 			double realDistance = Math.sqrt((t0.x-link.point.t0.x)*(t0.x-link.point.t0.x)+(t0.y-link.point.t0.y)*(t0.y-link.point.t0.y));
-			double force = K*(link.distance-realDistance);
+			double force = K*(link.distance-realDistance)*(link.distance-realDistance)*(link.distance-realDistance);
 			forceX+=(t0.x-link.point.t0.x)/realDistance * force;
 			forceY+=(t0.y-link.point.t0.y)/realDistance * force;
 		}
-		t1.vx= t0.vx + forceX*dt;
-		t1.vy= t0.vy + forceY*dt;
+		double forceAfterFrictionX = 0;
+		double forceAfterFrictionY = 0;
+		if (FRICTION<forceX)
+		{
+			forceAfterFrictionX = forceX-Math.signum(t0.vx)*FRICTION;
+		}
+		
+		if (FRICTION<forceY)
+		{
+			forceAfterFrictionY = forceY-Math.signum(t0.vy)*FRICTION;
+		}
+		
+		t1.vx= t0.vx + (forceAfterFrictionX)*dt;
+		t1.vy= t0.vy + (forceAfterFrictionY)*dt;
 		
 		t1.x = t0.x + t1.vx*dt;
 		t1.y = t0.y + t1.vy*dt;
