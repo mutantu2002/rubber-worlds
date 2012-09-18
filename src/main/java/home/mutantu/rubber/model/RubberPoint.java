@@ -14,6 +14,11 @@ public class RubberPoint
 	
 	List<LinkRubberPoint> links = new ArrayList<LinkRubberPoint>();
 	
+	public RubberPoint(int index)
+	{
+		this.index=index;
+	}
+
 	public void addLink(RubberPoint point, int distance)
 	{
 		links.add(new LinkRubberPoint(point, distance));

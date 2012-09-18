@@ -13,7 +13,6 @@ public class RubberObject
 	
 	public RubberObject()
 	{
-		addPoint();
 	}
 
 	public Object getPointCount()
@@ -23,7 +22,7 @@ public class RubberObject
 
 	public synchronized void addPoint()
 	{
-		RubberPoint point = new RubberPoint();
+		RubberPoint point = new RubberPoint(points.size());
 		point.t0.x=100+10*(points.size());
 		point.t0.y=100+10*(points.size());
 		points.put(points.size(),point);
@@ -31,7 +30,7 @@ public class RubberObject
 	
 	public synchronized void addPoint(int x, int y)
 	{
-		RubberPoint point = new RubberPoint();
+		RubberPoint point = new RubberPoint(points.size());
 		point.t0.x=x;
 		point.t0.y=y;
 		points.put(points.size(),point);
