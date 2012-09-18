@@ -7,6 +7,15 @@ import java.util.List;
 public class RubberWorld
 {
 	List<RubberObject> objects = new ArrayList<RubberObject>();
+	private int width = 800;
+    private int height = 600;
+    
+	public RubberWorld(int width, int height)
+	{
+		super();
+		this.width = width;
+		this.height = height;
+	}
 
 	public void next()
 	{
@@ -32,5 +41,14 @@ public class RubberWorld
 		{
 			obj.flipCoordinates();
 		}		
+	}
+
+	public double getWidth()
+	{
+		return width;
+	}
+	public double getHeight()
+	{
+		return height;
 	}
 }
