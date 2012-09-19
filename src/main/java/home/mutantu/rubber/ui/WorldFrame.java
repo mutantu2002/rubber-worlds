@@ -18,7 +18,7 @@ public class WorldFrame extends JFrame
     {
     	this.width = width;
     	this.height = height;
-    	setSize(this.width+10, this.height+50);
+    	setSize(this.width+20, this.height+50);
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	drawingPanel = new RasterPanel (this.width,this.height);
         add (drawingPanel);

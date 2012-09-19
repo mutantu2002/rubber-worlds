@@ -7,7 +7,7 @@ public class WorldRunner implements Runnable
 {
 	RubberWorld world;
 	WorldFrame frame;
-	int pauseMilisec = 3;
+	int pauseMilisec = 2;
 	private boolean running = true;
 	
 	public WorldRunner(RubberWorld world,WorldFrame frame)
@@ -34,10 +34,10 @@ public class WorldRunner implements Runnable
 			frame.buildFrame(world);
 			frames++;
 			
-			if (frames==100)
+			if (frames==1000)
 			{
 				long t1 = System.currentTimeMillis();
-				double framesperSec = (double)100/((double)(t1-t0)/1000.);
+				double framesperSec = (double)1000/((double)(t1-t0)/1000.);
 				t0=System.currentTimeMillis();
 				frames=0;
 				frame.setTitle(new Double(framesperSec).toString());

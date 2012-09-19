@@ -6,11 +6,12 @@ public class Coordinates
 	public double y;
 	public double vx;
 	public double vy;
-	public Coordinates(int x, int y, int vx, int vy)
+	
+	public Coordinates(double d, double e, double vxTmp, double vyTmp)
 	{
-		this.x=x;
-		this.y=y;
-		this.vx=vx;
-		this.vy=vy;
+		this.x=d;
+		this.y=e;
+		this.vx=vxTmp;
+		this.vy=vyTmp;
 	}
 }
