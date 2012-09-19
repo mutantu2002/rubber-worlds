@@ -36,11 +36,11 @@ public class RubberObject
 		points.put(points.size(),point);
 	}
 
-	public synchronized void addPoint(int x, int y, double vx, double vy)
+	public synchronized void addPoint(double d, double e, double vx, double vy)
 	{
 		RubberPoint point = new RubberPoint(points.size());
-		point.t0.x=x;
-		point.t0.y=y;
+		point.t0.x=d;
+		point.t0.y=e;
 		
 		point.t0.vx=vx;
 		point.t0.vy=vy;
@@ -53,7 +53,10 @@ public class RubberObject
 		{
 			throw new IndexOutOfBoundsException();
 		}
-		
+		if (areLinked(index1, index2))
+		{
+			return;
+		}
 		points.get(index1).addLink(points.get(index2),distance);
 		points.get(index2).addLink(points.get(index1),distance);
 	}
