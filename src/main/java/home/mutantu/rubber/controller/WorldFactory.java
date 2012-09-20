@@ -68,7 +68,7 @@ public class WorldFactory
 				toAdd.t0.y=initYRectangle+y*distance;
 				if (center.getDistanceFrom(toAdd)<=radius+Constants.EPSILON)
 				{
-					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,0,/*x>numberPointsOnEdge/2?10:-10*/-20);
+					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,20,/*x>numberPointsOnEdge/2?10:-10*/-20);
 				}
 			}
 		}

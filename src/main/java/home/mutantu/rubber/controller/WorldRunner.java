@@ -1,5 +1,6 @@
 package home.mutantu.rubber.controller;
 
+import home.mutantu.rubber.model.Constants;
 import home.mutantu.rubber.model.RubberWorld;
 import home.mutantu.rubber.ui.WorldFrame;
 
@@ -7,7 +8,6 @@ public class WorldRunner implements Runnable
 {
 	RubberWorld world;
 	WorldFrame frame;
-	int pauseMilisec = 2;
 	private boolean running = true;
 	
 	public WorldRunner(RubberWorld world,WorldFrame frame)
@@ -24,7 +24,7 @@ public class WorldRunner implements Runnable
 		{
 			try
 			{
-				Thread.sleep(pauseMilisec);
+				Thread.sleep(Constants.PAUSE_MILISEC);
 			}
 			catch (InterruptedException e)
 			{
