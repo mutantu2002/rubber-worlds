@@ -15,7 +15,7 @@ public class RubberObject
 	{
 	}
 
-	public Object getPointCount()
+	public int getPointCount()
 	{
 		return points.size();
 	}
@@ -28,23 +28,25 @@ public class RubberObject
 		points.put(points.size(),point);
 	}
 	
-	public synchronized void addPoint(int x, int y)
+	public synchronized RubberPoint addPoint(int x, int y)
 	{
 		RubberPoint point = new RubberPoint(points.size());
 		point.t0.x=x;
 		point.t0.y=y;
 		points.put(points.size(),point);
+		return point;
 	}
 
 	public synchronized void addPoint(double d, double e, double vx, double vy)
 	{
-		RubberPoint point = new RubberPoint(points.size());
+		int size = points.size();
+		RubberPoint point = new RubberPoint(size);
 		point.t0.x=d;
 		point.t0.y=e;
 		
 		point.t0.vx=vx;
 		point.t0.vy=vy;
-		points.put(points.size(),point);
+		points.put(size,point);
 	}
 	
 	public void linkPoints(int index1, int index2, double distance)
@@ -83,6 +85,11 @@ public class RubberObject
 		return Collections.unmodifiableList(new ArrayList<RubberPoint>(points.values()));
 	}
 
+	public RubberPoint getPoint(int index )
+	{
+		return points.get(index);
+	}
+	
 	public void flipCoordinates()
 	{
 		for (Integer pointIndex : points.keySet())

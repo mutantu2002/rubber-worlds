@@ -1,5 +1,6 @@
 package home.mutantu.rubber.controller;
 
+import home.mutantu.rubber.model.Constants;
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
 import home.mutantu.rubber.model.RubberWorld;
@@ -21,63 +22,75 @@ public class WorldFactory
 		return world;
 	}
 	
-	public static RubberWorld createOneRectangleObjectWorld(int initX,int initY,int numberPointsOnEdge, double initDistance, double distance)
+	public static RubberWorld createOneRectangleObjectWorld(int initX,int initY,int numberPointsOnEdge, double distance)
 	{
 		double distanceDiagonal = distance*Math.sqrt(2);
-		RubberWorld world  = new RubberWorld(800,600);
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
 		RubberObject obj = new RubberObject();
 		
 		for (int y=0;y<numberPointsOnEdge;y++)
 		{
 			for(int x=0;x<numberPointsOnEdge;x++)
 			{
-				obj.addPoint(initX+x*initDistance,initY+y*initDistance,0,x>numberPointsOnEdge/2?10:-10);
+				obj.addPoint(initX+x*distance,initY+y*distance,0,/*x>numberPointsOnEdge/2?10:-10*/30);
 			}
 		}
 		
-		int index=numberPointsOnEdge+1;
-		for (int y=1;y<numberPointsOnEdge-1;y++)
-		{
-			for(int x=1;x<numberPointsOnEdge-1;x++)
-			{
-				obj.linkPoints(index, index+1, distance);
-				obj.linkPoints(index, index-1, distance);
-				obj.linkPoints(index, index-numberPointsOnEdge, distance);
-				obj.linkPoints(index, index+numberPointsOnEdge, distance);
-				
-				obj.linkPoints(index, index+(numberPointsOnEdge-1), distanceDiagonal);
-				obj.linkPoints(index, index-(numberPointsOnEdge-1), distanceDiagonal);
-				obj.linkPoints(index, index-(numberPointsOnEdge+1), distanceDiagonal);
-				obj.linkPoints(index, index+(numberPointsOnEdge+1), distanceDiagonal);
-				
-				index++;
-			}
-			index+=2;
-		}
-		for (int y=0;y<numberPointsOnEdge-1;y++)
-		{
-			obj.linkPoints(y*numberPointsOnEdge, (y+1)*numberPointsOnEdge, distance);
-			obj.linkPoints(y*numberPointsOnEdge+numberPointsOnEdge-1, (y+1)*numberPointsOnEdge+numberPointsOnEdge-1, distance);
-		}
-		
-		for (int x=0;x<numberPointsOnEdge-1;x++)
-		{
-			obj.linkPoints(x, x+1, distance);
-			obj.linkPoints((numberPointsOnEdge-1)*numberPointsOnEdge+x, (numberPointsOnEdge-1)*numberPointsOnEdge+x+1, distance);
-		}
+		linkAllLessThanDistance(obj, distanceDiagonal*2);
 		
 		world.addObject(obj);
 		
 		return world;
 	}
 	
-	private void linkAllLessThanDistance(RubberObject obj, double distance)
+	public static RubberWorld createOneRoundObjectWorld(int initX,int initY,int numberPointsOnDiameter, double distance)
 	{
-		for (RubberPoint point : obj.getPoints())
+		double distanceDiagonal = distance*Math.sqrt(2);
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberObject obj = new RubberObject();
+		if (numberPointsOnDiameter%2==0)
 		{
-			for (RubberPoint point1 : obj.getPoints())
+			numberPointsOnDiameter++;
+		}
+		RubberPoint center = obj.addPoint(initX, initY);
+		
+		double radius = distance*(numberPointsOnDiameter-1)/2;
+		
+		double initXRectangle = initX-radius;
+		double initYRectangle = initY-radius;
+		
+		for (int y=0;y<numberPointsOnDiameter;y++)
+		{
+			for(int x=0;x<numberPointsOnDiameter;x++)
 			{
-				
+				RubberPoint toAdd = new RubberPoint(0);
+				toAdd.t0.x=initXRectangle+x*distance;
+				toAdd.t0.y=initYRectangle+y*distance;
+				if (center.getDistanceFrom(toAdd)<=radius+Constants.EPSILON)
+				{
+					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,0,/*x>numberPointsOnEdge/2?10:-10*/-20);
+				}
+			}
+		}
+		
+		linkAllLessThanDistance(obj, distanceDiagonal*2);
+		
+		world.addObject(obj);
+		
+		return world;
+	}
+	
+	private static void linkAllLessThanDistance(RubberObject obj, double maxDistance)
+	{
+		for (int x=0;x<obj.getPointCount();x++)
+		{
+			for (int y=0;y<obj.getPointCount();y++)
+			{
+				double actualDistance = obj.getPoint(x).getDistanceFrom(obj.getPoint(y));
+				if (actualDistance<=maxDistance+Constants.EPSILON && x!=y)
+				{
+					obj.linkPoints(x, y, actualDistance);
+				}
 			}
 		}
 	}
