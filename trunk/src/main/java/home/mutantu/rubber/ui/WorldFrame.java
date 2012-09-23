@@ -35,7 +35,9 @@ public class WorldFrame extends JFrame
 			{
 				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y);
 			}
+			drawingPanel.drawObjectContour(obj.getContour());
 		}
+
 		repaint();
 	}
 }

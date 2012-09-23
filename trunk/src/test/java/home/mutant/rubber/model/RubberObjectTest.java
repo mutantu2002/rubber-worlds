@@ -12,9 +12,9 @@ public class RubberObjectTest
 	public void testAddPoint()
 	{
 		RubberObject obj = new RubberObject();
-		obj.addPoint();
+		obj.addPoint(obj);
 		assertEquals(1,obj.getPointCount());
-		obj.addPoint();
+		obj.addPoint(obj);
 		assertEquals(2,obj.getPointCount());
 	}
 
@@ -22,12 +22,12 @@ public class RubberObjectTest
 	public void testLinkPoints()
 	{
 		RubberObject obj = new RubberObject();
-		obj.addPoint();
-		obj.addPoint();
+		obj.addPoint(obj);
+		obj.addPoint(obj);
 		obj.linkPoints(0,1,10);
 		assertTrue(obj.areLinked(0,1));
 		
-		obj.addPoint();
+		obj.addPoint(obj);
 		assertFalse(obj.areLinked(0,2));
 	}
 

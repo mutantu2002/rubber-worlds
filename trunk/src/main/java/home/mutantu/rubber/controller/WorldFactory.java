@@ -11,9 +11,9 @@ public class WorldFactory
 	{
 		RubberWorld world  = new RubberWorld(10,10);
 		RubberObject obj = new RubberObject();
-		obj.addPoint();
-		obj.addPoint();
-		obj.addPoint(100,110);
+		obj.addPoint(obj);
+		obj.addPoint(obj);
+		obj.addPoint(100,110,obj);
 		obj.linkPoints(0, 1, 10);
 		obj.linkPoints(0, 2, 10);
 		obj.linkPoints(2, 1, 10);
@@ -24,38 +24,37 @@ public class WorldFactory
 	
 	public static RubberWorld createOneRectangleObjectWorld(int initX,int initY,int numberPointsOnEdge, double distance)
 	{
-		double distanceDiagonal = distance*Math.sqrt(2);
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-		RubberObject obj = new RubberObject();
-		
-		for (int y=0;y<numberPointsOnEdge;y++)
-		{
-			for(int x=0;x<numberPointsOnEdge;x++)
-			{
-				obj.addPoint(initX+x*distance,initY+y*distance,0,/*x>numberPointsOnEdge/2?10:-10*/30);
-			}
-		}
-		
-		linkAllLessThanDistance(obj, distanceDiagonal*2);
-		
-		world.addObject(obj);
-		
+		world.addObject(createRectangle(initX, initY, numberPointsOnEdge, distance));
 		return world;
 	}
 	
 	public static RubberWorld createOneRoundObjectWorld(int initX,int initY,int numberPointsOnDiameter, double distance)
 	{
-		double distanceDiagonal = distance*Math.sqrt(2);
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		world.addObject(createCircle(initX, initY, numberPointsOnDiameter, distance));
+		return world;
+	}
+	
+	public static RubberWorld create2ObjectsWorld(int initX,int initY,int numberPoints, double distance)
+	{
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		world.addObject(createCircle(initX+200, initY+100, numberPoints, distance));
+		world.addObject(createRectangle(initX, initY, numberPoints, distance));
+		return world;
+	}
+	
+	public static RubberObject createCircle(int initX,int initY,int numberPointsOnDiameter, double distance)
+	{
+		double distanceDiagonal = distance*Math.sqrt(2);
 		RubberObject obj = new RubberObject();
 		if (numberPointsOnDiameter%2==0)
 		{
 			numberPointsOnDiameter++;
 		}
-		RubberPoint center = obj.addPoint(initX, initY);
+		RubberPoint center = obj.addPoint(initX, initY, obj);
 		
 		double radius = distance*(numberPointsOnDiameter-1)/2;
-		
 		double initXRectangle = initX-radius;
 		double initYRectangle = initY-radius;
 		
@@ -63,23 +62,33 @@ public class WorldFactory
 		{
 			for(int x=0;x<numberPointsOnDiameter;x++)
 			{
-				RubberPoint toAdd = new RubberPoint(0);
+				RubberPoint toAdd = new RubberPoint(0,obj);
 				toAdd.t0.x=initXRectangle+x*distance;
 				toAdd.t0.y=initYRectangle+y*distance;
 				if (center.getDistanceFrom(toAdd)<=radius+Constants.EPSILON)
 				{
-					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,20,/*x>numberPointsOnEdge/2?10:-10*/-20);
+					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,20,/*x>numberPointsOnEdge/2?10:-10*/-20,obj);
 				}
 			}
 		}
-		
 		linkAllLessThanDistance(obj, distanceDiagonal*2);
-		
-		world.addObject(obj);
-		
-		return world;
+		return obj;
 	}
-	
+	public static RubberObject createRectangle(int initX,int initY,int numberPointsOnEdge, double distance)
+	{
+		double distanceDiagonal = distance*Math.sqrt(2);
+		RubberObject obj = new RubberObject();
+		
+		for (int y=0;y<numberPointsOnEdge;y++)
+		{
+			for(int x=0;x<numberPointsOnEdge;x++)
+			{
+				obj.addPoint(initX+x*distance,initY+y*distance,10,/*x>numberPointsOnEdge/2?10:-10*/30,obj);
+			}
+		}
+		linkAllLessThanDistance(obj, distanceDiagonal*2);
+		return obj;
+	}
 	private static void linkAllLessThanDistance(RubberObject obj, double maxDistance)
 	{
 		for (int x=0;x<obj.getPointCount();x++)
