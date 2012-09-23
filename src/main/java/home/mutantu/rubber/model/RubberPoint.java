@@ -1,6 +1,8 @@
 package home.mutantu.rubber.model;
 
 
+import home.mutantu.rubber.util.LinesUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +11,13 @@ public class RubberPoint
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);
-	
+	private RubberObject parent;
 	List<LinkRubberPoint> links = new ArrayList<LinkRubberPoint>();
 	
-	public RubberPoint(int index)
+	public RubberPoint(int index, RubberObject parent)
 	{
 		this.index=index;
+		this.parent = parent;
 	}
 
 	public void addLink(RubberPoint point, double distance)
@@ -41,6 +44,7 @@ public class RubberPoint
 	{
 		euler();
 		//rungeKutta2Order();
+		checkCollisions(rubberWorld);
 		checkLimits(rubberWorld);
 	}
 
@@ -49,7 +53,7 @@ public class RubberPoint
 		Force force = new Force();
 		for (LinkRubberPoint link : links)
 		{
-			double realDistance = Math.sqrt((coord.x-link.point.t0.x)*(coord.x-link.point.t0.x)+(coord.y-link.point.t0.y)*(coord.y-link.point.t0.y));
+			double realDistance = LinesUtil.distance(coord, link.point.t0);
 			double valForce = Constants.ELASTIC_CONSTANTS*(link.distance-realDistance);//*Math.abs((link.distance-realDistance));//*(link.distance-realDistance);
 			if (realDistance==0)
 			{
@@ -65,6 +69,20 @@ public class RubberPoint
 		return force;
 	}
 
+	private void checkCollisions(RubberWorld rubberWorld)
+	{
+		for (RubberObject obj : rubberWorld.getObjects())
+		{
+			if (obj==parent)
+			{
+				continue;
+			}
+			if (obj.isInside(t1))
+			{
+				t1 = obj.closestPointToContour(t1);
+			}
+		}
+	}
 	private void checkLimits(RubberWorld rubberWorld)
 	{
 		if (t1.x<0)
