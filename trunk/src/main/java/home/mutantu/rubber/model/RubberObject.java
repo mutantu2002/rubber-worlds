@@ -86,7 +86,7 @@ public class RubberObject
 
 	public List<RubberPoint> get2ClosestPoints(Coordinates coord)
 	{
-		List<RubberPoint> result = new ArrayList<RubberPoint>();
+/*		List<RubberPoint> result = new ArrayList<RubberPoint>();
 		double distance = Double.MAX_VALUE;
 		int index = 0;
 		for (int i=0;i<contour.size();i++)
@@ -110,6 +110,22 @@ public class RubberObject
 			result.add(contour.get(index));
 			result.add(contour.get((index+1)%contour.size()));
 		}
+		return result;*/
+		
+		List<RubberPoint> result = new ArrayList<RubberPoint>();
+		double distance = Double.MAX_VALUE;
+		int index = 0;
+		for (int i=0;i<contour.size();i++)
+		{
+			double distanceTmp = LinesUtil.distanceToSegment(coord,  contour.get(i).t0,  contour.get((i+1)%contour.size()).t0);
+			if (distance>distanceTmp)
+			{
+				distance = distanceTmp;
+				index = i;
+			}
+		}
+		result.add(contour.get(index));
+		result.add(contour.get((index+1)%contour.size()));
 		return result;
 	}
 	public Coordinates closestPointToContour(Coordinates coord)
