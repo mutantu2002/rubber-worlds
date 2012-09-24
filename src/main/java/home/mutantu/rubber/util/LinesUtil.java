@@ -19,6 +19,11 @@ public class LinesUtil
 		return distance(point, closestPointToSegment(point, segEdge1, segEdge2));
 	}
 	
+	public static Coordinates closestPointOutsideToSegment(Coordinates point, Coordinates segEdge1, Coordinates segEdge2)
+	{
+		Coordinates closest = closestPointToSegment(point, segEdge1, segEdge2);
+		return  new Coordinates(point.x + 1.1 * (closest.x - point.x), point.y + 1.1 * (closest.y - point.y), 0, 0);
+	}
 	public static Coordinates closestPointToSegment(Coordinates point, Coordinates segEdge1, Coordinates segEdge2)
 	{
 		double l2 = distanceSquared(segEdge1, segEdge2);
