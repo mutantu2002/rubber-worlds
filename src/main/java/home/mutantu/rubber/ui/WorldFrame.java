@@ -31,10 +31,10 @@ public class WorldFrame extends JFrame
 		drawingPanel.empty();
 		for (RubberObject obj : world.getObjects())
 		{
-/*			for (RubberPoint point : obj.getPoints())
+			for (RubberPoint point : obj.getPoints())
 			{
 				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y);
-			}*/
+			}
 			drawingPanel.drawObjectContour(obj.getContour());
 		}
 

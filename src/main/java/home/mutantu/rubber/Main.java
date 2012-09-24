@@ -13,6 +13,6 @@ public class Main
 	{
 		//new Thread(new WorldRunner(WorldFactory.createOneRectangleObjectWorld(200,50,15,13), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 		//new Thread(new WorldRunner(WorldFactory.createOneRoundObjectWorld(400,300,20,10), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
-		new Thread(new WorldRunner(WorldFactory.create2ObjectsWorld(100,100,10,10), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
+		new Thread(new WorldRunner(WorldFactory.create3ObjectsWorld(100,100,10,10), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 	}
 }
