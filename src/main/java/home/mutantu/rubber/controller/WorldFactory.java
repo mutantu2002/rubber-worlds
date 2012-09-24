@@ -39,7 +39,7 @@ public class WorldFactory
 	public static RubberWorld create2ObjectsWorld(int initX,int initY,int numberPoints, double distance)
 	{
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-		world.addObject(createCircle(initX+200, initY+100, numberPoints, distance));
+		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
 		world.addObject(createRectangle(initX, initY, numberPoints, distance));
 		return world;
 	}
@@ -67,7 +67,7 @@ public class WorldFactory
 				toAdd.t0.y=initYRectangle+y*distance;
 				if (center.getDistanceFrom(toAdd)<=radius+Constants.EPSILON)
 				{
-					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,20,/*x>numberPointsOnEdge/2?10:-10*/-20,obj);
+					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,0,/*x>numberPointsOnEdge/2?10:-10*/0,obj);
 				}
 			}
 		}
@@ -83,7 +83,7 @@ public class WorldFactory
 		{
 			for(int x=0;x<numberPointsOnEdge;x++)
 			{
-				obj.addPoint(initX+x*distance,initY+y*distance,10,/*x>numberPointsOnEdge/2?10:-10*/30,obj);
+				obj.addPoint(initX+x*distance,initY+y*distance,20,/*x>numberPointsOnEdge/2?10:-10*/0,obj);
 			}
 		}
 		linkAllLessThanDistance(obj, distanceDiagonal*2);
