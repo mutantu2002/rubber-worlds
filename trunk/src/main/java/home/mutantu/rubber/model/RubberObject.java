@@ -131,7 +131,7 @@ public class RubberObject
 	public Coordinates closestPointToContour(Coordinates coord)
 	{
 		List<RubberPoint> closer = get2ClosestPoints(coord);
-		return LinesUtil.closestPointToSegment(coord, closer.get(0).t0, closer.get(1).t0);
+		return LinesUtil.closestPointOutsideToSegment(coord, closer.get(0).t0, closer.get(1).t0);
 	}
 	public boolean isInside(Coordinates coord)
 	{
