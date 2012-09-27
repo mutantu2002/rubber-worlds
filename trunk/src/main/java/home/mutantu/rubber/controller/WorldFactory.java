@@ -1,5 +1,8 @@
 package home.mutantu.rubber.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import home.mutantu.rubber.model.Constants;
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
@@ -22,10 +25,17 @@ public class WorldFactory
 		return world;
 	}
 	
-	public static RubberWorld createOneRectangleObjectWorld(int initX,int initY,int numberPointsOnEdge, double distance)
+	public static RubberWorld createOneSquareObjectWorld(int initX,int initY,int numberPointsOnEdge, double distance)
 	{
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-		world.addObject(createRectangle(initX, initY, numberPointsOnEdge, distance));
+		world.addObject(createSquare(initX, initY, numberPointsOnEdge, distance));
+		return world;
+	}
+	
+	public static RubberWorld createOneRectangleObjectWorld(int initX,int initY,int numberPointsOnW, int numberPointsOnH, double distance)
+	{
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		world.addObject(createRectangle(initX, initY, numberPointsOnW, numberPointsOnH, distance));
 		return world;
 	}
 	
@@ -40,7 +50,7 @@ public class WorldFactory
 	{
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
 		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
-		world.addObject(createRectangle(initX, initY, numberPoints, distance));
+		world.addObject(createSquare(initX, initY, numberPoints, distance));
 		return world;
 	}
 	
@@ -50,15 +60,15 @@ public class WorldFactory
 		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
 		world.addObject(createCircle(initX+200, initY+105, numberPoints, distance));
 		world.addObject(createCircle(initX+200, initY+220, numberPoints, distance));
-		world.addObject(createRectangle(initX+350, initY-100, numberPoints, distance));
+		world.addObject(createSquare(initX+350, initY-100, numberPoints, distance));
 		world.addObject(createCircle(initX+350, initY+105, numberPoints, distance));
-		world.addObject(createRectangle(initX+350, initY+220, numberPoints, distance));
-		world.addObject(createRectangle(initX, initY, numberPoints, distance));
-		world.addObject(createRectangle(initX, initY+105, numberPoints, distance));
-		world.addObject(createRectangle(initX, initY+220, numberPoints, distance));
-		world.addObject(createRectangle(initX-100, initY, numberPoints, distance));
-		world.addObject(createRectangle(initX-100, initY+105, numberPoints, distance));
-		world.addObject(createRectangle(initX-100, initY+220, numberPoints, distance));
+		world.addObject(createSquare(initX+350, initY+220, numberPoints, distance));
+		world.addObject(createSquare(initX, initY, numberPoints, distance));
+		world.addObject(createSquare(initX, initY+105, numberPoints, distance));
+		world.addObject(createSquare(initX, initY+220, numberPoints, distance));
+		world.addObject(createSquare(initX-100, initY, numberPoints, distance));
+		world.addObject(createSquare(initX-100, initY+105, numberPoints, distance));
+		world.addObject(createSquare(initX-100, initY+220, numberPoints, distance));
 		return world;
 	}
 	
@@ -92,21 +102,27 @@ public class WorldFactory
 		linkAllLessThanDistance(obj, distanceDiagonal*3);
 		return obj;
 	}
-	public static RubberObject createRectangle(int initX,int initY,int numberPointsOnEdge, double distance)
+	public static RubberObject createSquare(int initX,int initY,int numberPointsOnEdge, double distance)
+	{
+		return createRectangle(initX, initY, numberPointsOnEdge, numberPointsOnEdge, distance);
+	}
+	
+	public static RubberObject createRectangle(int initX,int initY,int numberPointsOnW,int numberPointsOnH, double distance)
 	{
 		double distanceDiagonal = distance*Math.sqrt(2);
 		RubberObject obj = new RubberObject();
 		
-		for (int y=0;y<numberPointsOnEdge;y++)
+		for (int y=0;y<numberPointsOnH;y++)
 		{
-			for(int x=0;x<numberPointsOnEdge;x++)
+			for(int x=0;x<numberPointsOnW;x++)
 			{
-				obj.addPoint(initX+x*distance,initY+y*distance,20,/*x>numberPointsOnEdge/2?10:-10*/0,obj);
+				obj.addPoint(initX+x*distance,initY+y*distance,20,0,obj);
 			}
 		}
 		linkAllLessThanDistance(obj, distanceDiagonal*3);
 		return obj;
 	}
+	
 	private static void linkAllLessThanDistance(RubberObject obj, double maxDistance)
 	{
 		for (int x=0;x<obj.getPointCount();x++)
@@ -120,5 +136,24 @@ public class WorldFactory
 				}
 			}
 		}
+	}
+	
+	private static List<RubberObject> create2connectedRectangles( int initX1,int initY1,int numberPointsOnW1,int numberPointsOnH1,
+																  int initX2,int initY2,int numberPointsOnW2,int numberPointsOnH2, double distance)
+	{
+		double distanceDiagonal = distance*Math.sqrt(2);
+		RubberObject obj = new RubberObject();
+		
+		for (int y=0;y<numberPointsOnH1;y++)
+		{
+			for(int x=0;x<numberPointsOnW1;x++)
+			{
+				obj.addPoint(initX1+x*distance,initY1+y*distance,20,0,obj);
+			}
+		}
+		linkAllLessThanDistance(obj, distanceDiagonal*3);
+		
+		List<RubberObject> list = new ArrayList<RubberObject>();
+		return list;
 	}
 }
