@@ -40,13 +40,28 @@ public class RubberObject
 		return point;
 	}
 
-	public synchronized void addPoint(double d, double e, double vx, double vy, RubberObject parent)
+	public synchronized void addPoint(double d, double e, double vx, double vy)
 	{
 		int size = points.size();
-		RubberPoint point = new RubberPoint(size, parent);
+		RubberPoint point = new RubberPoint(size, this);
 		point.t0.x=d;
 		point.t0.y=e;
 		
+		point.t0.vx=vx;
+		point.t0.vy=vy;
+		points.put(size,point);
+	}
+	
+	public synchronized void addPoint(double d, double e, double vx, double vy, RubberObject extraParent)
+	{
+		int size = points.size();
+		RubberPoint point = new RubberPoint(size, this);
+		point.t0.x=d;
+		point.t0.y=e;
+		if (extraParent!=null)
+		{
+			point.addParent(extraParent);
+		}
 		point.t0.vx=vx;
 		point.t0.vy=vy;
 		points.put(size,point);
@@ -72,7 +87,7 @@ public class RubberObject
 		{
 			throw new IndexOutOfBoundsException();
 		}
-		return points.get(index1).isLinkedTo(index2);
+		return points.get(index1).isLinkedTo(points.get(index2));
 	}
 
 	public void next(RubberWorld rubberWorld)
@@ -86,32 +101,6 @@ public class RubberObject
 
 	public List<RubberPoint> get2ClosestPoints(Coordinates coord)
 	{
-/*		List<RubberPoint> result = new ArrayList<RubberPoint>();
-		double distance = Double.MAX_VALUE;
-		int index = 0;
-		for (int i=0;i<contour.size();i++)
-		{
-			double distanceTmp = LinesUtil.distance(coord, contour.get(i).t0);
-			if (distance>distanceTmp)
-			{
-				distance = distanceTmp;
-				index = i;
-			}
-		}
-		double distanceBack  = LinesUtil.distance(coord, contour.get((index+contour.size()-1)%contour.size()).t0);
-		double distanceFront  = LinesUtil.distance(coord, contour.get((index+1)%contour.size()).t0);
-		if (distanceBack<distanceFront)
-		{
-			result.add(contour.get((index+contour.size()-1)%contour.size()));
-			result.add(contour.get(index));
-		}
-		else
-		{
-			result.add(contour.get(index));
-			result.add(contour.get((index+1)%contour.size()));
-		}
-		return result;*/
-		
 		List<RubberPoint> result = new ArrayList<RubberPoint>();
 		double distance = Double.MAX_VALUE;
 		int index = 0;
@@ -163,5 +152,37 @@ public class RubberObject
 	public List<RubberPoint> getContour()
 	{
 		return Collections.unmodifiableList(contour);
+	}
+
+	public boolean hasPoint(RubberPoint point)
+	{
+		for (Integer pointIndex : points.keySet())
+		{
+			if (point.equals(points.get(pointIndex)))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public RubberPoint hasPoint(double x, double y)
+	{
+		Coordinates coord = new Coordinates(x, y, 0, 0);
+		for (Integer pointIndex : points.keySet())
+		{
+			if (coord.equals(points.get(pointIndex).t0))
+			{
+				return points.get(pointIndex);
+			}
+		}
+		return null;
+	}
+
+	public synchronized void addPoint(RubberPoint point)
+	{
+		int size = points.size();
+		point.addParent(this);
+		points.put(size,point);
 	}
 }

@@ -35,6 +35,14 @@ public class RubberWorld
 		objects.add(obj);
 	}
 
+	public void addObjects(List<RubberObject> listObj)
+	{
+		for (RubberObject rubberObject : listObj)
+		{
+			objects.add(rubberObject);
+		}
+	}
+	
 	public void flipCoordinates()
 	{
 		for (RubberObject obj : objects) 

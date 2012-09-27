@@ -11,13 +11,14 @@ public class RubberPoint
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);
-	private RubberObject parent;
+	private List<RubberObject> parents = new ArrayList<RubberObject>();
 	List<LinkRubberPoint> links = new ArrayList<LinkRubberPoint>();
+	private boolean nextDone = false;
 	
 	public RubberPoint(int index, RubberObject parent)
 	{
 		this.index=index;
-		this.parent = parent;
+		this.parents.add(parent);
 	}
 
 	public void addLink(RubberPoint point, double distance)
@@ -25,10 +26,22 @@ public class RubberPoint
 		links.add(new LinkRubberPoint(point, distance));
 	}
 
+	public void addParent(RubberObject parent)
+	{
+		for (RubberObject existingParent : parents)
+		{
+			if (existingParent==parent)
+			{
+				return;
+			}
+		}
+		this.parents.add(parent);
+	}
 	public double getDistanceFrom(RubberPoint point)
 	{
 		return Math.sqrt((t0.x-point.t0.x)*(t0.x-point.t0.x)+(t0.y-point.t0.y)*(t0.y-point.t0.y));
 	}
+	
 	public boolean isLinkedTo(int index)
 	{
 		for (LinkRubberPoint link : links)
@@ -40,12 +53,30 @@ public class RubberPoint
 		}
 		return false;
 	}
+	
+	public boolean isLinkedTo(RubberPoint rubberPoint)
+	{
+		for (LinkRubberPoint link : links)
+		{
+			if (rubberPoint == link.point)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void next(RubberWorld rubberWorld)
 	{
+		if (nextDone)
+		{
+			return;
+		}
 		euler();
 		//rungeKutta2Order();
 		checkCollisions(rubberWorld);
 		checkLimits(rubberWorld);
+		nextDone = true;
 	}
 
 	private Force calculateForce(Coordinates coord)
@@ -69,11 +100,22 @@ public class RubberPoint
 		return force;
 	}
 
+	private boolean hasParent(RubberObject obj)
+	{
+		for (RubberObject object : parents)
+		{
+			if (object==obj)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	private void checkCollisions(RubberWorld rubberWorld)
 	{
 		for (RubberObject obj : rubberWorld.getObjects())
 		{
-			if (obj==parent)
+			if (hasParent(obj))
 			{
 				continue;
 			}
@@ -113,6 +155,7 @@ public class RubberPoint
 		t0.y=t1.y;
 		t0.vx=t1.vx;
 		t0.vy=t1.vy;
+		nextDone = false;
 	}
 	
 	private void euler()
@@ -142,4 +185,34 @@ public class RubberPoint
 		t1.x = t0.x + ((t0.vx+vxN_1)/2.)*Constants.DT;
 		t1.y = t0.y + ((t0.vy+vyN_1)/2.)*Constants.DT;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((t0 == null) ? 0 : t0.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RubberPoint other = (RubberPoint) obj;
+		if (t0 == null)
+		{
+			if (other.t0 != null)
+				return false;
+		} else if (!t0.equals(other.t0))
+			return false;
+		return true;
+	}
+
+
 }

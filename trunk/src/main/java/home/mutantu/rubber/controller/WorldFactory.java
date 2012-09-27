@@ -95,7 +95,7 @@ public class WorldFactory
 				toAdd.t0.y=initYRectangle+y*distance;
 				if (center.getDistanceFrom(toAdd)<=radius+Constants.EPSILON)
 				{
-					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,10,/*x>numberPointsOnEdge/2?10:-10*/0,obj);
+					obj.addPoint(initXRectangle+x*distance,initYRectangle+y*distance,10,/*x>numberPointsOnEdge/2?10:-10*/0);
 				}
 			}
 		}
@@ -116,7 +116,7 @@ public class WorldFactory
 		{
 			for(int x=0;x<numberPointsOnW;x++)
 			{
-				obj.addPoint(initX+x*distance,initY+y*distance,20,0,obj);
+				obj.addPoint(initX+x*distance,initY+y*distance,20,0);
 			}
 		}
 		linkAllLessThanDistance(obj, distanceDiagonal*3);
@@ -138,22 +138,49 @@ public class WorldFactory
 		}
 	}
 	
+	public static RubberWorld create2ConnectedObjectsWorld(int initX,int initY,int numberPoints, double distance)
+	{
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		world.addObjects(create2connectedRectangles(100, 121, 30, 10, 121, 100, 10, 30, distance));
+		return world;
+	}
+	
 	private static List<RubberObject> create2connectedRectangles( int initX1,int initY1,int numberPointsOnW1,int numberPointsOnH1,
 																  int initX2,int initY2,int numberPointsOnW2,int numberPointsOnH2, double distance)
 	{
 		double distanceDiagonal = distance*Math.sqrt(2);
-		RubberObject obj = new RubberObject();
+		RubberObject obj1 = new RubberObject();
+		RubberObject obj2 = new RubberObject();
 		
 		for (int y=0;y<numberPointsOnH1;y++)
 		{
 			for(int x=0;x<numberPointsOnW1;x++)
 			{
-				obj.addPoint(initX1+x*distance,initY1+y*distance,20,0,obj);
+				obj1.addPoint(initX1+x*distance,initY1+y*distance,20,0,obj2);
 			}
 		}
-		linkAllLessThanDistance(obj, distanceDiagonal*3);
+		
+		for (int y=0;y<numberPointsOnH2;y++)
+		{
+			for(int x=0;x<numberPointsOnW2;x++)
+			{
+				RubberPoint point = obj1.hasPoint(initX2+x*distance, initY2+y*distance);
+				if (point!=null)
+				{
+					obj2.addPoint(point);
+				}
+				else
+				{
+					obj2.addPoint(initX2+x*distance,initY2+y*distance,20,0,obj1);
+				}
+			}
+		}
+		linkAllLessThanDistance(obj1, distanceDiagonal*3);
+		linkAllLessThanDistance(obj2, distanceDiagonal*3);
 		
 		List<RubberObject> list = new ArrayList<RubberObject>();
+		list.add(obj1);
+		list.add(obj2);
 		return list;
 	}
 }
