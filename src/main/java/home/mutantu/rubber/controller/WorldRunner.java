@@ -22,12 +22,15 @@ public class WorldRunner implements Runnable
 		long t0=System.currentTimeMillis();
 		while(running)
 		{
-			try
+			if (Constants.PAUSE_MILISEC>0)
 			{
-				Thread.sleep(Constants.PAUSE_MILISEC);
-			}
-			catch (InterruptedException e)
-			{
+				try
+				{
+					Thread.sleep(Constants.PAUSE_MILISEC);
+				}
+				catch (InterruptedException e)
+				{
+				}
 			}
 			world.next();
 			world.flipCoordinates();
