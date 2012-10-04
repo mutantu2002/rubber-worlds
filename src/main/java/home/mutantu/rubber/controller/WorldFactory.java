@@ -145,6 +145,27 @@ public class WorldFactory
 		return world;
 	}
 	
+	public static RubberObject createConnectedRectangle(int initX,int initY,int numberPointsOnW,int numberPointsOnH, double distance, RubberObject friend)
+	{
+		RubberObject obj = new RubberObject();
+		for (int y=0;y<numberPointsOnH;y++)
+		{
+			for(int x=0;x<numberPointsOnW;x++)
+			{
+				RubberPoint point = obj.hasPoint(initX+x*distance, initY+y*distance);
+				if (point!=null)
+				{
+					obj.addPoint(point);
+				}
+				else
+				{
+					obj.addPoint(initX+x*distance,initY+y*distance,20,0,friend);
+				}
+			}
+		}
+		return obj;
+	}
+	
 	private static List<RubberObject> create2connectedRectangles( int initX1,int initY1,int numberPointsOnW1,int numberPointsOnH1,
 																  int initX2,int initY2,int numberPointsOnW2,int numberPointsOnH2, double distance)
 	{
@@ -182,5 +203,32 @@ public class WorldFactory
 		list.add(obj1);
 		list.add(obj2);
 		return list;
+	}
+	
+	public static RubberWorld createOneParallelogramObjectWorld(int initX,int initY,int numberPointsOnW, int numberPointsOnH, double distance)
+	{
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		world.addObject(createParallelogram(initX, initY, numberPointsOnW, numberPointsOnH, distance,false));
+		return world;
+	}
+	
+	public static RubberObject createParallelogram(int initX,int initY,int numberPointsOnW,int numberPointsOnH, double distance, boolean directionRight)
+	{
+		double distanceDiagonal = distance*Math.sqrt(2);
+		RubberObject obj = new RubberObject();
+		int dir = -1;
+		if (directionRight)
+		{
+			dir=1;
+		}
+		for (int y=0;y<numberPointsOnH;y++)
+		{
+			for(int x=0;x<numberPointsOnW;x++)
+			{
+				obj.addPoint(initX+dir*y*distance+x*distance,initY+y*distance,20,0);
+			}
+		}
+		linkAllLessThanDistance(obj, distanceDiagonal*3);
+		return obj;
 	}
 }
