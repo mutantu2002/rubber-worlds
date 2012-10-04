@@ -42,14 +42,7 @@ public class RubberObject
 
 	public synchronized void addPoint(double d, double e, double vx, double vy)
 	{
-		int size = points.size();
-		RubberPoint point = new RubberPoint(size, this);
-		point.t0.x=d;
-		point.t0.y=e;
-		
-		point.t0.vx=vx;
-		point.t0.vy=vy;
-		points.put(size,point);
+		addPoint(d, e, vx, vy, null);
 	}
 	
 	public synchronized void addPoint(double d, double e, double vx, double vy, RubberObject extraParent)
