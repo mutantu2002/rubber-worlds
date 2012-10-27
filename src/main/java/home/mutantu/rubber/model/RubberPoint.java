@@ -93,6 +93,7 @@ public class RubberPoint
 			force.fx+=(coord.x-link.point.t0.x)/realDistance * valForce;
 			force.fy+=(coord.y-link.point.t0.y)/realDistance * valForce;
 		}
+
 		force.fy+=Constants.GRAVITY;
 		force.fx-=coord.vx*Constants.FRICTION;
 		force.fy-=coord.vy*Constants.FRICTION;

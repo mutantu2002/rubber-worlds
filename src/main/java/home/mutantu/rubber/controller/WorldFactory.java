@@ -1,7 +1,11 @@
 package home.mutantu.rubber.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import home.mutantu.rubber.model.Constants;
 import home.mutantu.rubber.model.RubberObject;
@@ -123,6 +127,43 @@ public class WorldFactory
 		return obj;
 	}
 	
+	public static RubberWorld createWorldFromImage(int initX,int initY, double distance)
+	{
+		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		world.addObject(createObjectFromImage("/om1.bmp", initX, initY, distance));
+		return world;
+	}
+	
+	public static RubberObject createObjectFromImage(String imageResourcePath, int initX,int initY, double distance)
+	{
+		BufferedImage image = null;
+		try
+		{
+			image = ImageIO.read(WorldFactory.class.getResourceAsStream(imageResourcePath));
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+		double distanceDiagonal = distance*Math.sqrt(2);
+		RubberObject obj = new RubberObject();
+		
+		for (int y=0;y<image.getHeight();y++)
+		{
+			for(int x=0;x<image.getWidth();x++)
+			{
+				int color = image.getRGB(x,y) & 0x00ffffff;
+				if (color == 0x00ffffff)
+				{
+					obj.addPoint(initX+x*distance,initY+y*distance,20,0);
+				}
+			}
+		}
+		linkAllLessThanDistance(obj, distanceDiagonal*3);
+		return obj;
+	}
+	
 	private static void linkAllLessThanDistance(RubberObject obj, double maxDistance)
 	{
 		for (int x=0;x<obj.getPointCount();x++)
@@ -152,7 +193,11 @@ public class WorldFactory
 		{
 			for(int x=0;x<numberPointsOnW;x++)
 			{
-				RubberPoint point = obj.hasPoint(initX+x*distance, initY+y*distance);
+				RubberPoint point = null;
+				if (friend != null)
+				{
+					point = friend.hasPoint(initX+x*distance, initY+y*distance);
+				}
 				if (point!=null)
 				{
 					obj.addPoint(point);
