@@ -84,4 +84,5 @@ public class RasterPanel extends JPanel
 		
 		g.dispose();
 	}
+
 }

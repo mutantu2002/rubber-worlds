@@ -1,5 +1,8 @@
 package home.mutantu.rubber.ui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
 import home.mutantu.rubber.model.RubberWorld;
@@ -13,6 +16,7 @@ public class WorldFrame extends JFrame
     private int height = 600;
     
     RasterPanel drawingPanel;
+    public boolean isDownPressed = false;
     
     public WorldFrame(int width, int height)
     {
@@ -24,6 +28,7 @@ public class WorldFrame extends JFrame
         add (drawingPanel);
         drawingPanel.init();
         setVisible(true);
+        //addKeyListener(this);
     }
 
 	public void buildFrame(RubberWorld world)
@@ -35,9 +40,32 @@ public class WorldFrame extends JFrame
 			{
 				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y);
 			}
-			drawingPanel.drawObjectContour(obj.getContour());
+			//drawingPanel.drawObjectContour(obj.getContour());
 		}
 
 		repaint();
 	}
+
+//	@Override
+//	public void keyPressed(KeyEvent e) 
+//	{
+//		if (e.getKeyCode()==40)
+//		{
+//			isDownPressed = true;
+//		}
+//	}
+//
+//	@Override
+//	public void keyReleased(KeyEvent e) 
+//	{
+//		if (e.getKeyCode()==40)
+//		{
+//			isDownPressed = false;
+//		}
+//	}
+//
+//	@Override
+//	public void keyTyped(KeyEvent e) 
+//	{
+//	}
 }

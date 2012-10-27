@@ -19,11 +19,12 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		//new Thread(new WorldRunner(WorldFactory.createOneSquareObjectWorld(200,50,3,5), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
+		//new Thread(new WorldRunner(WorldFactory.createOneSquareObjectWorld(200,50,30,5), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 		//new Thread(new WorldRunner(WorldFactory.createOneRectangleObjectWorld(200,50,10, 4, 8), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
-		new Thread(new WorldRunner(WorldFactory.createOneParallelogramObjectWorld(200,50,5,10, 8), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
+		//new Thread(new WorldRunner(WorldFactory.createOneParallelogramObjectWorld(200,50,5,10, 8), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 		//new Thread(new WorldRunner(WorldFactory.createOneRoundObjectWorld(400,300,20,8), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 		//new Thread(new WorldRunner(WorldFactory.create3ObjectsWorld(100,100,10,10), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 		//new Thread(new WorldRunner(WorldFactory.create2ConnectedObjectsWorld(100,100,10,7), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
+		new Thread(new WorldRunner(WorldFactory.createWorldFromImage(0, 0, 5), new WorldFrame(Constants.WIDTH,Constants.HEIGHT))).start();
 	}
 }
