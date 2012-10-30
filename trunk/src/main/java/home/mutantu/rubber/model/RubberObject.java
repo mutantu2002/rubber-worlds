@@ -1,7 +1,6 @@
 package home.mutantu.rubber.model;
 
 
-import home.mutantu.rubber.util.ConvexHull;
 import home.mutantu.rubber.util.LinesUtil;
 
 import java.awt.Point;
@@ -17,7 +16,7 @@ public class RubberObject
 	Map<Integer, RubberPoint> points = new HashMap<Integer,RubberPoint>();
 	List<RubberPoint> contour = new ArrayList<RubberPoint>();
 	Point center = new Point();
-	
+
 	public int getPointCount()
 	{
 		return points.size();
@@ -89,7 +88,7 @@ public class RubberObject
 		{
 			points.get(pointIndex).next(rubberWorld);
 		}
-		contour = ConvexHull.compute(getPoints());
+		//contour = ConvexHull.compute(getPoints());
 	}
 
 	public List<RubberPoint> get2ClosestPoints(Coordinates coord)

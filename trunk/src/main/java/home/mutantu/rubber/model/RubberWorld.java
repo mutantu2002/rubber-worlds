@@ -9,6 +9,7 @@ public class RubberWorld
 	List<RubberObject> objects = new ArrayList<RubberObject>();
 	private int width = 800;
     private int height = 600;
+    public boolean isDownPressed;
     
 	public RubberWorld(int width, int height)
 	{
@@ -17,8 +18,9 @@ public class RubberWorld
 		this.height = height;
 	}
 
-	public void next()
+	public void next(boolean isDownPressed)
 	{
+		this.isDownPressed = isDownPressed;
 		for (RubberObject obj : objects) 
 		{
 			obj.next(this);
