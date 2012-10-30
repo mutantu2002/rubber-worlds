@@ -72,14 +72,14 @@ public class RubberPoint
 		{
 			return;
 		}
-		euler();
+		euler(rubberWorld.isDownPressed);
 		//rungeKutta2Order();
 		checkCollisions(rubberWorld);
 		checkLimits(rubberWorld);
 		nextDone = true;
 	}
 
-	private Force calculateForce(Coordinates coord)
+	private Force calculateForce(Coordinates coord, boolean isDownPressed)
 	{
 		Force force = new Force();
 		for (LinkRubberPoint link : links)
@@ -94,7 +94,14 @@ public class RubberPoint
 			force.fy+=(coord.y-link.point.t0.y)/realDistance * valForce;
 		}
 
-		force.fy+=Constants.GRAVITY;
+		if (isDownPressed)
+		{
+			force.fy+=Constants.GRAVITY*8;
+		}
+		else
+		{
+			force.fy+=Constants.GRAVITY;
+		}
 		force.fx-=coord.vx*Constants.FRICTION;
 		force.fy-=coord.vy*Constants.FRICTION;
 		
@@ -159,9 +166,9 @@ public class RubberPoint
 		nextDone = false;
 	}
 	
-	private void euler()
+	private void euler(boolean isDownPressed)
 	{
-		Force force = calculateForce(t0);
+		Force force = calculateForce(t0, isDownPressed);
 		t1.vx= t0.vx + force.fx*Constants.DT;
 		t1.vy= t0.vy + force.fy*Constants.DT;
 		
@@ -172,11 +179,11 @@ public class RubberPoint
 	@SuppressWarnings("unused")
 	private void rungeKutta2Order()
 	{
-		Force forceN = calculateForce(t0);
+		Force forceN = calculateForce(t0, false);
 		double vxN_1 = t0.vx+forceN.fx*Constants.DT;
 		double vyN_1 = t0.vy+forceN.fy*Constants.DT;
 		Coordinates tmpCoord = new Coordinates(t0.x+vxN_1*Constants.DT, t0.y+vyN_1*Constants.DT, vxN_1, vyN_1);
-		Force forceN_1 = calculateForce(tmpCoord);
+		Force forceN_1 = calculateForce(tmpCoord, false);
 		
 		System.out.println(forceN.fx+" "+forceN_1.fx);
 		
@@ -214,6 +221,4 @@ public class RubberPoint
 			return false;
 		return true;
 	}
-
-
 }

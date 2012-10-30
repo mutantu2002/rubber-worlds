@@ -10,7 +10,7 @@ import home.mutantu.rubber.model.RubberWorld;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
-public class WorldFrame extends JFrame
+public class WorldFrame extends JFrame implements KeyListener
 {
 	private int width = 800;
     private int height = 600;
@@ -28,7 +28,7 @@ public class WorldFrame extends JFrame
         add (drawingPanel);
         drawingPanel.init();
         setVisible(true);
-        //addKeyListener(this);
+        addKeyListener(this);
     }
 
 	public void buildFrame(RubberWorld world)
@@ -46,26 +46,26 @@ public class WorldFrame extends JFrame
 		repaint();
 	}
 
-//	@Override
-//	public void keyPressed(KeyEvent e) 
-//	{
-//		if (e.getKeyCode()==40)
-//		{
-//			isDownPressed = true;
-//		}
-//	}
-//
-//	@Override
-//	public void keyReleased(KeyEvent e) 
-//	{
-//		if (e.getKeyCode()==40)
-//		{
-//			isDownPressed = false;
-//		}
-//	}
-//
-//	@Override
-//	public void keyTyped(KeyEvent e) 
-//	{
-//	}
+	@Override
+	public void keyPressed(KeyEvent e) 
+	{
+		if (e.getKeyCode()==40)
+		{
+			isDownPressed = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) 
+	{
+		if (e.getKeyCode()==40)
+		{
+			isDownPressed = false;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) 
+	{
+	}
 }
