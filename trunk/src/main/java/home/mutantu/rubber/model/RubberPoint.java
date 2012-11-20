@@ -96,7 +96,7 @@ public class RubberPoint
 
 		if (isDownPressed)
 		{
-			force.fy+=Constants.GRAVITY*8;
+			force.fy+=Constants.GRAVITY*15;
 		}
 		else
 		{
