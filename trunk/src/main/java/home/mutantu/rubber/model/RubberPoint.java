@@ -72,14 +72,14 @@ public class RubberPoint
 		{
 			return;
 		}
-		euler(rubberWorld.isDownPressed);
+		euler(rubberWorld.keyboardState);
 		//rungeKutta2Order();
 		checkCollisions(rubberWorld);
 		checkLimits(rubberWorld);
 		nextDone = true;
 	}
 
-	private Force calculateForce(Coordinates coord, boolean isDownPressed)
+	private Force calculateForce(Coordinates coord, KeyboardState keyboardState)
 	{
 		Force force = new Force();
 		for (LinkRubberPoint link : links)
@@ -94,14 +94,25 @@ public class RubberPoint
 			force.fy+=(coord.y-link.point.t0.y)/realDistance * valForce;
 		}
 
-		if (isDownPressed)
+		if (keyboardState!=null && keyboardState.isDownPressed)
 		{
-			force.fy+=Constants.GRAVITY*15;
+			force.fy+=Constants.GRAVITY*9;
 		}
 		else
 		{
 			force.fy+=Constants.GRAVITY;
 		}
+		
+		if (keyboardState!=null && keyboardState.isRightPressed)
+		{
+			force.fx+=Constants.GRAVITY*7;
+		}
+
+		if (keyboardState!=null && keyboardState.isLeftPressed)
+		{
+			force.fx-=Constants.GRAVITY*7;
+		}
+		
 		force.fx-=coord.vx*Constants.FRICTION;
 		force.fy-=coord.vy*Constants.FRICTION;
 		
@@ -166,9 +177,9 @@ public class RubberPoint
 		nextDone = false;
 	}
 	
-	private void euler(boolean isDownPressed)
+	private void euler(KeyboardState keyboardState)
 	{
-		Force force = calculateForce(t0, isDownPressed);
+		Force force = calculateForce(t0, keyboardState);
 		t1.vx= t0.vx + force.fx*Constants.DT;
 		t1.vy= t0.vy + force.fy*Constants.DT;
 		
@@ -179,11 +190,11 @@ public class RubberPoint
 	@SuppressWarnings("unused")
 	private void rungeKutta2Order()
 	{
-		Force forceN = calculateForce(t0, false);
+		Force forceN = calculateForce(t0, null);
 		double vxN_1 = t0.vx+forceN.fx*Constants.DT;
 		double vyN_1 = t0.vy+forceN.fy*Constants.DT;
 		Coordinates tmpCoord = new Coordinates(t0.x+vxN_1*Constants.DT, t0.y+vyN_1*Constants.DT, vxN_1, vyN_1);
-		Force forceN_1 = calculateForce(tmpCoord, false);
+		Force forceN_1 = calculateForce(tmpCoord, null);
 		
 		System.out.println(forceN.fx+" "+forceN_1.fx);
 		

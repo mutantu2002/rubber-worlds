@@ -20,14 +20,27 @@
   </dependencies>
   <build>
     <plugins>
-	    <plugin>
+	<plugin>
 	        <groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
 			<configuration>
 	  			<source>1.6</source>
 	  			<target>1.6</target>
 			</configuration>
-		</plugin>
+	</plugin>
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+			<archive>
+				<manifest>
+					<mainClass>home.mutantu.rubber.Main</mainClass>
+					<packageName>home.mutantu.rubber</packageName>
+				</manifest>
+			</archive>
+		</configuration>
+	</plugin>	
     </plugins>
   </build>
 </project>

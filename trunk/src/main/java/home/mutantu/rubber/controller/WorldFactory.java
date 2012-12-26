@@ -61,18 +61,18 @@ public class WorldFactory
 	public static RubberWorld create3ObjectsWorld(int initX,int initY,int numberPoints, double distance)
 	{
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
-		world.addObject(createCircle(initX+200, initY+105, numberPoints, distance));
-		world.addObject(createCircle(initX+200, initY+220, numberPoints, distance));
+//		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
+//		world.addObject(createCircle(initX+200, initY+105, numberPoints, distance));
+//		world.addObject(createCircle(initX+200, initY+220, numberPoints, distance));
 		world.addObject(createSquare(initX+350, initY-100, numberPoints, distance));
 		world.addObject(createCircle(initX+350, initY+105, numberPoints, distance));
-		world.addObject(createSquare(initX+350, initY+220, numberPoints, distance));
-		world.addObject(createSquare(initX, initY, numberPoints, distance));
-		world.addObject(createSquare(initX, initY+105, numberPoints, distance));
-		world.addObject(createSquare(initX, initY+220, numberPoints, distance));
-		world.addObject(createSquare(initX-100, initY, numberPoints, distance));
-		world.addObject(createSquare(initX-100, initY+105, numberPoints, distance));
-		world.addObject(createSquare(initX-100, initY+220, numberPoints, distance));
+//		world.addObject(createSquare(initX+350, initY+220, numberPoints, distance));
+//		world.addObject(createSquare(initX, initY, numberPoints, distance));
+//		world.addObject(createSquare(initX, initY+105, numberPoints, distance));
+		//world.addObject(createSquare(initX, initY+220, numberPoints, distance));
+		//world.addObject(createSquare(initX-100, initY, numberPoints, distance));
+		//world.addObject(createSquare(initX-100, initY+105, numberPoints, distance));
+		//world.addObject(createSquare(initX-100, initY+220, numberPoints, distance));
 		return world;
 	}
 	

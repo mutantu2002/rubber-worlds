@@ -3,6 +3,7 @@ package home.mutantu.rubber.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import home.mutantu.rubber.model.KeyboardState;
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
 import home.mutantu.rubber.model.RubberWorld;
@@ -16,7 +17,8 @@ public class WorldFrame extends JFrame implements KeyListener
     private int height = 600;
     
     RasterPanel drawingPanel;
-    public boolean isDownPressed = false;
+    public KeyboardState keyboardState = new KeyboardState();
+
     
     public WorldFrame(int width, int height)
     {
@@ -51,7 +53,15 @@ public class WorldFrame extends JFrame implements KeyListener
 	{
 		if (e.getKeyCode()==40)
 		{
-			isDownPressed = true;
+			keyboardState.isDownPressed = true;
+		}
+		else if (e.getKeyCode()==37)
+		{
+			keyboardState.isLeftPressed  = true;
+		}
+		else if (e.getKeyCode()==39)
+		{
+			keyboardState.isRightPressed  = true;
 		}
 	}
 
@@ -60,7 +70,15 @@ public class WorldFrame extends JFrame implements KeyListener
 	{
 		if (e.getKeyCode()==40)
 		{
-			isDownPressed = false;
+			keyboardState.isDownPressed = false;
+		}
+		else if (e.getKeyCode()==37)
+		{
+			keyboardState.isLeftPressed  = false;
+		}
+		else if (e.getKeyCode()==39)
+		{
+			keyboardState.isRightPressed  = false;
 		}
 	}
 

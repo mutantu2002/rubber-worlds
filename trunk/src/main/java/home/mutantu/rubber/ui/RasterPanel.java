@@ -29,13 +29,13 @@ public class RasterPanel extends JPanel
 	
 	public void init ()  
 	{
-		int numPixels = width * height;
+		int numPixels = (width+20) * (height+20);
 		
 		pixels = new int [numPixels];
 		DataBuffer buffer = new DataBufferInt(pixels, numPixels);
 		int [] masks = {0xFF0000, 0xFF00, 0xff, 0xff000000};
 		
-		WritableRaster raster = Raster.createPackedRaster (buffer, width, height, width, masks, null);
+		WritableRaster raster = Raster.createPackedRaster (buffer, (width+20), (height+20), (width+20), masks, null);
 		ColorModel color_model = ColorModel.getRGBdefault();
 		image = new BufferedImage (color_model,raster,false,null);
 
@@ -59,11 +59,13 @@ public class RasterPanel extends JPanel
 
 	public void set4Pixels(int x, int y)
 	{
-		int maxIndex = height *width;
-		int index= width*y+x % maxIndex;
+		x+=10;
+		y+=10;
+		int maxIndex = (height+20) *(width+20);
+		int index= (width+20)*y+x % maxIndex;
 		pixels[index] = 0xFF000000;
 		pixels[(index+1)%maxIndex] = 0xFF000000;
-		index= width*(y+1)+x % maxIndex;
+		index= (width+20)*(y+1)+x % maxIndex;
 		pixels[index] = 0xFF000000;
 		pixels[(index+1)%maxIndex] = 0xFF000000;
 	}
