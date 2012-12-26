@@ -32,7 +32,7 @@ public class WorldRunner implements Runnable
 				{
 				}
 			}
-			world.next(frame.isDownPressed);
+			world.next(frame.keyboardState);
 			world.flipCoordinates();
 			frame.buildFrame(world);
 			frames++;

@@ -9,7 +9,7 @@ public class RubberWorld
 	List<RubberObject> objects = new ArrayList<RubberObject>();
 	private int width = 800;
     private int height = 600;
-    public boolean isDownPressed;
+    public KeyboardState keyboardState;
     
 	public RubberWorld(int width, int height)
 	{
@@ -18,9 +18,9 @@ public class RubberWorld
 		this.height = height;
 	}
 
-	public void next(boolean isDownPressed)
+	public void next(KeyboardState keysState)
 	{
-		this.isDownPressed = isDownPressed;
+		this.keyboardState = keysState;
 		for (RubberObject obj : objects) 
 		{
 			obj.next(this);
