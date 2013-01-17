@@ -7,6 +7,7 @@ import home.mutantu.rubber.model.KeyboardState;
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
 import home.mutantu.rubber.model.RubberWorld;
+import home.mutantu.rubber.model.StillRubberObject;
 
 import javax.swing.JFrame;
 
@@ -42,9 +43,11 @@ public class WorldFrame extends JFrame implements KeyListener
 			{
 				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y);
 			}
-			//drawingPanel.drawObjectContour(obj.getContour());
+			if (obj instanceof StillRubberObject)
+			{
+				drawingPanel.drawObjectContour(obj.getContour());
+			}
 		}
-
 		repaint();
 	}
 

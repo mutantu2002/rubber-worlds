@@ -105,12 +105,12 @@ public class RubberPoint
 		
 		if (keyboardState!=null && keyboardState.isRightPressed)
 		{
-			force.fx+=Constants.GRAVITY*7;
+			force.fx+=Constants.GRAVITY*3;
 		}
 
 		if (keyboardState!=null && keyboardState.isLeftPressed)
 		{
-			force.fx-=Constants.GRAVITY*7;
+			force.fx-=Constants.GRAVITY*3;
 		}
 		
 		force.fx-=coord.vx*Constants.FRICTION;
@@ -144,6 +144,7 @@ public class RubberPoint
 			}
 		}
 	}
+	
 	private void checkLimits(RubberWorld rubberWorld)
 	{
 		if (t1.x<0)

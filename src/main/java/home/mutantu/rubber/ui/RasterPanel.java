@@ -59,8 +59,8 @@ public class RasterPanel extends JPanel
 
 	public void set4Pixels(int x, int y)
 	{
-		x+=10;
-		y+=10;
+//		x+=10;
+//		y+=10;
 		int maxIndex = (height+20) *(width+20);
 		int index= (width+20)*y+x % maxIndex;
 		pixels[index] = 0xFF000000;
