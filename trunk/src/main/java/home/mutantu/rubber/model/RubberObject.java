@@ -89,6 +89,11 @@ public class RubberObject
 		{
 			points.get(pointIndex).next(rubberWorld);
 		}
+		computeContour();
+	}
+
+	public void computeContour() 
+	{
 		contour = ConvexHull.compute(getPoints());
 	}
 

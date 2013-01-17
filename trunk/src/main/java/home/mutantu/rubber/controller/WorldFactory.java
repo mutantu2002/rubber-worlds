@@ -11,6 +11,7 @@ import home.mutantu.rubber.model.Constants;
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
 import home.mutantu.rubber.model.RubberWorld;
+import home.mutantu.rubber.model.StillRubberObject;
 
 public class WorldFactory
 {
@@ -61,11 +62,15 @@ public class WorldFactory
 	public static RubberWorld create3ObjectsWorld(int initX,int initY,int numberPoints, double distance)
 	{
 		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-//		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
+		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
+		world.addObject(createStillRectangle(300, 300, 900, 400));
+		
+		world.addObject(createStill());
+		
 //		world.addObject(createCircle(initX+200, initY+105, numberPoints, distance));
 //		world.addObject(createCircle(initX+200, initY+220, numberPoints, distance));
-		world.addObject(createSquare(initX+350, initY-100, numberPoints, distance));
-		world.addObject(createCircle(initX+350, initY+105, numberPoints, distance));
+//		world.addObject(createSquare(initX+350, initY-100, numberPoints, distance));
+//		world.addObject(createCircle(initX+350, initY+105, numberPoints, distance));
 //		world.addObject(createSquare(initX+350, initY+220, numberPoints, distance));
 //		world.addObject(createSquare(initX, initY, numberPoints, distance));
 //		world.addObject(createSquare(initX, initY+105, numberPoints, distance));
@@ -76,6 +81,27 @@ public class WorldFactory
 		return world;
 	}
 	
+	public static StillRubberObject createStillRectangle(int x1, int y1, int x2, int y2)
+	{
+		StillRubberObject rect = new StillRubberObject();
+		rect.addPoint(x1, y1, rect);
+		rect.addPoint(x1, y2, rect);
+		rect.addPoint(x2, y1, rect);
+		rect.addPoint(x2, y2, rect);
+		rect.computeContour();
+		return rect;
+	}
+	
+	public static StillRubberObject createStill()
+	{
+		StillRubberObject rect = new StillRubberObject();
+		rect.addPoint(0, 800, rect);
+		rect.addPoint(0, 700, rect);
+		rect.addPoint(1500, 800, rect);
+		rect.addPoint(1500, 400, rect);
+		rect.computeContour();
+		return rect;
+	}
 	public static RubberObject createCircle(int initX,int initY,int numberPointsOnDiameter, double distance)
 	{
 		double distanceDiagonal = distance*Math.sqrt(2);

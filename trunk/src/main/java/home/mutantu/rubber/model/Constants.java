@@ -4,7 +4,7 @@ public class Constants
 {
 
 	public static final double FRICTION = 0.025;
-	public static final double GRAVITY = 2.5;
+	public static final double GRAVITY = 3.5;
 	public static final double ELASTIC_CONSTANTS=7;
 	public static final double DT=0.1;
 	public static final int WIDTH = 1500;
