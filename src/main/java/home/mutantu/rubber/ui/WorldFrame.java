@@ -3,6 +3,7 @@ package home.mutantu.rubber.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import home.mutantu.rubber.model.Constants;
 import home.mutantu.rubber.model.KeyboardState;
 import home.mutantu.rubber.model.RubberObject;
 import home.mutantu.rubber.model.RubberPoint;
@@ -19,6 +20,7 @@ public class WorldFrame extends JFrame implements KeyListener
     
     RasterPanel drawingPanel;
     public KeyboardState keyboardState = new KeyboardState();
+    int viewportX = 0;
 
     
     public WorldFrame(int width, int height)
@@ -39,13 +41,31 @@ public class WorldFrame extends JFrame implements KeyListener
 		drawingPanel.empty();
 		for (RubberObject obj : world.getObjects())
 		{
+			if (obj.controllable)
+			{
+				int center=0;
+				for (RubberPoint point : obj.getPoints())
+				{
+					center += (int)point.t0.x - viewportX;
+				}
+				center/=obj.getPoints().size();
+				if (center<Constants.MARGIN)
+				{
+					viewportX+=center-Constants.MARGIN;
+				}
+				if (center>width-Constants.MARGIN)
+				{
+					viewportX+=center-width+Constants.MARGIN;
+				}
+			}
+			
 			for (RubberPoint point : obj.getPoints())
 			{
-				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y);
+				drawingPanel.set4Pixels((int)point.t0.x, (int)point.t0.y, viewportX);
 			}
 			if (obj instanceof StillRubberObject)
 			{
-				drawingPanel.drawObjectContour(obj.getContour());
+				drawingPanel.drawObjectContour(obj.getContour(), viewportX);
 			}
 		}
 		repaint();

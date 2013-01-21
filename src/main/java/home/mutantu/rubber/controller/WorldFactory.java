@@ -2,8 +2,6 @@ package home.mutantu.rubber.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -32,28 +30,28 @@ public class WorldFactory
 	
 	public static RubberWorld createOneSquareObjectWorld(int initX,int initY,int numberPointsOnEdge, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		world.addObject(createSquare(initX, initY, numberPointsOnEdge, distance));
 		return world;
 	}
 	
 	public static RubberWorld createOneRectangleObjectWorld(int initX,int initY,int numberPointsOnW, int numberPointsOnH, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		world.addObject(createRectangle(initX, initY, numberPointsOnW, numberPointsOnH, distance));
 		return world;
 	}
 	
 	public static RubberWorld createOneRoundObjectWorld(int initX,int initY,int numberPointsOnDiameter, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		world.addObject(createCircle(initX, initY, numberPointsOnDiameter, distance));
 		return world;
 	}
 	
 	public static RubberWorld create2ObjectsWorld(int initX,int initY,int numberPoints, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
 		world.addObject(createSquare(initX, initY, numberPoints, distance));
 		return world;
@@ -61,9 +59,13 @@ public class WorldFactory
 	
 	public static RubberWorld create3ObjectsWorld(int initX,int initY,int numberPoints, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-		world.addObject(createCircle(initX+200, initY, numberPoints, distance));
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
+		RubberObject circle = createCircle(initX+200, initY, numberPoints, distance);
+		circle.controllable=true;
+		world.addObject(circle);
 		world.addObject(createStillRectangle(300, 300, 900, 400));
+		world.addObject(createStillRectangle(-400, 0, -300, 800));
+		world.addObject(createStillRectangle(2100, 0, 2000, 800));
 		
 		world.addObject(createStill());
 		
@@ -74,8 +76,8 @@ public class WorldFactory
 //		world.addObject(createSquare(initX+350, initY+220, numberPoints, distance));
 //		world.addObject(createSquare(initX, initY, numberPoints, distance));
 //		world.addObject(createSquare(initX, initY+105, numberPoints, distance));
-		//world.addObject(createSquare(initX, initY+220, numberPoints, distance));
-		//world.addObject(createSquare(initX-100, initY, numberPoints, distance));
+		world.addObject(createSquare(initX, initY+220, numberPoints, distance));
+		world.addObject(createSquare(initX-100, initY, numberPoints, distance));
 		//world.addObject(createSquare(initX-100, initY+105, numberPoints, distance));
 		//world.addObject(createSquare(initX-100, initY+220, numberPoints, distance));
 		return world;
@@ -97,8 +99,9 @@ public class WorldFactory
 		StillRubberObject rect = new StillRubberObject();
 		rect.addPoint(0, 800, rect);
 		rect.addPoint(0, 700, rect);
-		rect.addPoint(1500, 800, rect);
-		rect.addPoint(1500, 400, rect);
+		rect.addPoint(1600, 800, rect);
+		rect.addPoint(1600, 600, rect);
+		rect.addPoint(1300, 600, rect);
 		rect.computeContour();
 		return rect;
 	}
@@ -155,7 +158,7 @@ public class WorldFactory
 	
 	public static RubberWorld createWorldFromImage(int initX,int initY, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		world.addObject(createObjectFromImage("/om1.bmp", initX, initY, distance));
 		return world;
 	}
@@ -205,80 +208,9 @@ public class WorldFactory
 		}
 	}
 	
-	public static RubberWorld create2ConnectedObjectsWorld(int initX,int initY,int numberPoints, double distance)
-	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
-		world.addObjects(create2connectedRectangles(100, 121, 30, 10, 121, 100, 10, 30, distance));
-		return world;
-	}
-	
-	public static RubberObject createConnectedRectangle(int initX,int initY,int numberPointsOnW,int numberPointsOnH, double distance, RubberObject friend)
-	{
-		RubberObject obj = new RubberObject();
-		for (int y=0;y<numberPointsOnH;y++)
-		{
-			for(int x=0;x<numberPointsOnW;x++)
-			{
-				RubberPoint point = null;
-				if (friend != null)
-				{
-					point = friend.hasPoint(initX+x*distance, initY+y*distance);
-				}
-				if (point!=null)
-				{
-					obj.addPoint(point);
-				}
-				else
-				{
-					obj.addPoint(initX+x*distance,initY+y*distance,20,0,friend);
-				}
-			}
-		}
-		return obj;
-	}
-	
-	private static List<RubberObject> create2connectedRectangles( int initX1,int initY1,int numberPointsOnW1,int numberPointsOnH1,
-																  int initX2,int initY2,int numberPointsOnW2,int numberPointsOnH2, double distance)
-	{
-		double distanceDiagonal = distance*Math.sqrt(2);
-		RubberObject obj1 = new RubberObject();
-		RubberObject obj2 = new RubberObject();
-		
-		for (int y=0;y<numberPointsOnH1;y++)
-		{
-			for(int x=0;x<numberPointsOnW1;x++)
-			{
-				obj1.addPoint(initX1+x*distance,initY1+y*distance,20,0,obj2);
-			}
-		}
-		
-		for (int y=0;y<numberPointsOnH2;y++)
-		{
-			for(int x=0;x<numberPointsOnW2;x++)
-			{
-				RubberPoint point = obj1.hasPoint(initX2+x*distance, initY2+y*distance);
-				if (point!=null)
-				{
-					obj2.addPoint(point);
-				}
-				else
-				{
-					obj2.addPoint(initX2+x*distance,initY2+y*distance,20,0,obj1);
-				}
-			}
-		}
-		linkAllLessThanDistance(obj1, distanceDiagonal*3);
-		linkAllLessThanDistance(obj2, distanceDiagonal*3);
-		
-		List<RubberObject> list = new ArrayList<RubberObject>();
-		list.add(obj1);
-		list.add(obj2);
-		return list;
-	}
-	
 	public static RubberWorld createOneParallelogramObjectWorld(int initX,int initY,int numberPointsOnW, int numberPointsOnH, double distance)
 	{
-		RubberWorld world  = new RubberWorld(Constants.WIDTH,Constants.HEIGHT);
+		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		world.addObject(createParallelogram(initX, initY, numberPointsOnW, numberPointsOnH, distance,false));
 		return world;
 	}
