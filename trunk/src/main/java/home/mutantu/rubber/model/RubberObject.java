@@ -17,6 +17,7 @@ public class RubberObject
 	Map<Integer, RubberPoint> points = new HashMap<Integer,RubberPoint>();
 	List<RubberPoint> contour = new ArrayList<RubberPoint>();
 	Point center = new Point();
+	public boolean controllable = false;
 
 	public int getPointCount()
 	{
@@ -39,22 +40,13 @@ public class RubberObject
 		points.put(points.size(),point);
 		return point;
 	}
-
-	public synchronized void addPoint(double d, double e, double vx, double vy)
-	{
-		addPoint(d, e, vx, vy, null);
-	}
 	
-	public synchronized void addPoint(double d, double e, double vx, double vy, RubberObject extraParent)
+	public synchronized void addPoint(double d, double e, double vx, double vy)
 	{
 		int size = points.size();
 		RubberPoint point = new RubberPoint(size, this);
 		point.t0.x=d;
 		point.t0.y=e;
-		if (extraParent!=null)
-		{
-			point.addParent(extraParent);
-		}
 		point.t0.vx=vx;
 		point.t0.vy=vy;
 		points.put(size,point);
@@ -180,7 +172,6 @@ public class RubberObject
 	public synchronized void addPoint(RubberPoint point)
 	{
 		int size = points.size();
-		point.addParent(this);
 		points.put(size,point);
 	}
 }

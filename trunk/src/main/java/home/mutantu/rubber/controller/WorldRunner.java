@@ -36,9 +36,9 @@ public class WorldRunner implements Runnable
 			world.flipCoordinates();
 			frame.buildFrame(world);
 			frames++;
-			
 			if (frames==1000)
 			{
+				
 				long t1 = System.currentTimeMillis();
 				double framesperSec = (double)1000/((double)(t1-t0)/1000.);
 				t0=System.currentTimeMillis();

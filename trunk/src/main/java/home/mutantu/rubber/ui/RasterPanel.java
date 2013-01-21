@@ -29,13 +29,13 @@ public class RasterPanel extends JPanel
 	
 	public void init ()  
 	{
-		int numPixels = (width+20) * (height+20);
+		int numPixels = (width) * (height);
 		
 		pixels = new int [numPixels];
 		DataBuffer buffer = new DataBufferInt(pixels, numPixels);
 		int [] masks = {0xFF0000, 0xFF00, 0xff, 0xff000000};
 		
-		WritableRaster raster = Raster.createPackedRaster (buffer, (width+20), (height+20), (width+20), masks, null);
+		WritableRaster raster = Raster.createPackedRaster (buffer, width, height, width, masks, null);
 		ColorModel color_model = ColorModel.getRGBdefault();
 		image = new BufferedImage (color_model,raster,false,null);
 
@@ -57,31 +57,42 @@ public class RasterPanel extends JPanel
 	}
 
 
-	public void set4Pixels(int x, int y)
+	public void set4Pixels(int x, int y, int x0) 
 	{
-//		x+=10;
-//		y+=10;
-		int maxIndex = (height+20) *(width+20);
-		int index= (width+20)*y+x % maxIndex;
+		x-=x0;
+		if (x+1>=width)
+		{
+			return;
+		}
+		if (x<0)
+		{
+			return;
+		}
+		
+		if (y+1>=height)
+		{
+			return;
+		}
+		int index= (width)*y+x ;
 		pixels[index] = 0xFF000000;
-		pixels[(index+1)%maxIndex] = 0xFF000000;
-		index= (width+20)*(y+1)+x % maxIndex;
+		pixels[(index+1)] = 0xFF000000;
+		index= (width)*(y+1)+x ;
 		pixels[index] = 0xFF000000;
-		pixels[(index+1)%maxIndex] = 0xFF000000;
+		pixels[(index+1)] = 0xFF000000;
 	}
 	
-	public void drawObjectContour(List<RubberPoint> points)
+	public void drawObjectContour(List<RubberPoint> points, int x0)
 	{
 		Graphics g = image.getGraphics();
 		int size = points.size();
 		RubberPoint point = points.get(0);
 		RubberPoint nextPoint = points.get(size-1);
-		g.drawLine((int)point.t0.x, (int)point.t0.y, (int)nextPoint.t0.x, (int)nextPoint.t0.y);
+		g.drawLine((int)point.t0.x-x0, (int)point.t0.y, (int)nextPoint.t0.x-x0, (int)nextPoint.t0.y);
 		for (int index=0;index<size-1;index++)
 		{
 			point = points.get(index);
 			nextPoint = points.get(index+1);
-			g.drawLine((int)point.t0.x, (int)point.t0.y, (int)nextPoint.t0.x, (int)nextPoint.t0.y);
+			g.drawLine((int)point.t0.x-x0, (int)point.t0.y, (int)nextPoint.t0.x-x0, (int)nextPoint.t0.y);
 		}
 		
 		g.dispose();

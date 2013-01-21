@@ -11,14 +11,14 @@ public class RubberPoint
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);
-	private List<RubberObject> parents = new ArrayList<RubberObject>();
+	private RubberObject parent;
 	List<LinkRubberPoint> links = new ArrayList<LinkRubberPoint>();
 	private boolean nextDone = false;
 	
 	public RubberPoint(int index, RubberObject parent)
 	{
 		this.index=index;
-		this.parents.add(parent);
+		this.parent=parent;
 	}
 
 	public void addLink(RubberPoint point, double distance)
@@ -26,17 +26,6 @@ public class RubberPoint
 		links.add(new LinkRubberPoint(point, distance));
 	}
 
-	public void addParent(RubberObject parent)
-	{
-		for (RubberObject existingParent : parents)
-		{
-			if (existingParent==parent)
-			{
-				return;
-			}
-		}
-		this.parents.add(parent);
-	}
 	public double getDistanceFrom(RubberPoint point)
 	{
 		return Math.sqrt((t0.x-point.t0.x)*(t0.x-point.t0.x)+(t0.y-point.t0.y)*(t0.y-point.t0.y));
@@ -73,7 +62,6 @@ public class RubberPoint
 			return;
 		}
 		euler(rubberWorld.keyboardState);
-		//rungeKutta2Order();
 		checkCollisions(rubberWorld);
 		checkLimits(rubberWorld);
 		nextDone = true;
@@ -94,23 +82,23 @@ public class RubberPoint
 			force.fy+=(coord.y-link.point.t0.y)/realDistance * valForce;
 		}
 
-		if (keyboardState!=null && keyboardState.isDownPressed)
+		force.fy+=Constants.GRAVITY;
+		if (parent.controllable)
 		{
-			force.fy+=Constants.GRAVITY*9;
-		}
-		else
-		{
-			force.fy+=Constants.GRAVITY;
-		}
-		
-		if (keyboardState!=null && keyboardState.isRightPressed)
-		{
-			force.fx+=Constants.GRAVITY*3;
-		}
-
-		if (keyboardState!=null && keyboardState.isLeftPressed)
-		{
-			force.fx-=Constants.GRAVITY*3;
+			if (keyboardState!=null && keyboardState.isDownPressed)
+			{
+				force.fy+=Constants.GRAVITY*9;
+			}
+			
+			if (keyboardState!=null && keyboardState.isRightPressed)
+			{
+				force.fx+=Constants.GRAVITY*3;
+			}
+	
+			if (keyboardState!=null && keyboardState.isLeftPressed)
+			{
+				force.fx-=Constants.GRAVITY*3;
+			}
 		}
 		
 		force.fx-=coord.vx*Constants.FRICTION;
@@ -119,22 +107,11 @@ public class RubberPoint
 		return force;
 	}
 
-	private boolean hasParent(RubberObject obj)
-	{
-		for (RubberObject object : parents)
-		{
-			if (object==obj)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 	private void checkCollisions(RubberWorld rubberWorld)
 	{
 		for (RubberObject obj : rubberWorld.getObjects())
 		{
-			if (hasParent(obj))
+			if (obj==parent)
 			{
 				continue;
 			}
@@ -147,21 +124,21 @@ public class RubberPoint
 	
 	private void checkLimits(RubberWorld rubberWorld)
 	{
-		if (t1.x<0)
-		{
-			t1.x=0;
-			t1.vx=0;
-		}
+//		if (t1.x<0)
+//		{
+//			t1.x=0;
+//			t1.vx=0;
+//		}
 		if (t1.y<0)
 		{
 			t1.y=0;
 			t1.vy=0;
 		}
-		if (t1.x>=rubberWorld.getWidth()-1)
-		{
-			t1.x=rubberWorld.getWidth()-2;
-			t1.vx=0;
-		}
+//		if (t1.x>=rubberWorld.getWidth()-1)
+//		{
+//			t1.x=rubberWorld.getWidth()-2;
+//			t1.vx=0;
+//		}
 		if (t1.y>=rubberWorld.getHeight()-1)
 		{
 			t1.y=rubberWorld.getHeight()-2;
