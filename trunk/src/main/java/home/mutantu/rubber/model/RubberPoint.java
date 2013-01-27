@@ -3,11 +3,13 @@ package home.mutantu.rubber.model;
 
 import home.mutantu.rubber.util.LinesUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RubberPoint
+public class RubberPoint implements Serializable
 {
+	private static final long serialVersionUID = -8060160709469620140L;
 	public int index;
 	public Coordinates t0 = new Coordinates(100,100,0,0);
 	public Coordinates t1 = new Coordinates(100,100,0,0);

@@ -1,7 +1,10 @@
 package home.mutantu.rubber.model;
 
-public class Coordinates
+import java.io.Serializable;
+
+public class Coordinates implements Serializable
 {
+	private static final long serialVersionUID = -3387208409285250465L;
 	public double x;
 	public double y;
 	public double vx;
