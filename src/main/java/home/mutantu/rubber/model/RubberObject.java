@@ -6,14 +6,16 @@ import home.mutantu.rubber.util.LinesUtil;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RubberObject 
+public class RubberObject implements Serializable
 {
+	private static final long serialVersionUID = 7282824740730637433L;
 	Map<Integer, RubberPoint> points = new HashMap<Integer,RubberPoint>();
 	List<RubberPoint> contour = new ArrayList<RubberPoint>();
 	Point center = new Point();
@@ -39,6 +41,11 @@ public class RubberObject
 		point.t0.y=y;
 		points.put(points.size(),point);
 		return point;
+	}
+
+	public synchronized RubberPoint addPoint(int x, int y)
+	{
+		return addPoint(x, y, this);
 	}
 	
 	public synchronized void addPoint(double d, double e, double vx, double vy)
@@ -86,7 +93,10 @@ public class RubberObject
 
 	public void computeContour() 
 	{
-		contour = ConvexHull.compute(getPoints());
+		if (points.size()>1)
+		{
+			contour = ConvexHull.compute(getPoints());
+		}
 	}
 
 	public List<RubberPoint> get2ClosestPoints(Coordinates coord)

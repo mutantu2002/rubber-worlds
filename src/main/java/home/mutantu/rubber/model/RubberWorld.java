@@ -1,11 +1,13 @@
 package home.mutantu.rubber.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RubberWorld
+public class RubberWorld implements Serializable
 {
+	private static final long serialVersionUID = 4945277472151111878L;
 	List<RubberObject> objects = new ArrayList<RubberObject>();
 	private int width = 800;
     private int height = 600;
@@ -60,5 +62,5 @@ public class RubberWorld
 	public double getHeight()
 	{
 		return height;
-	}
+	}   
 }

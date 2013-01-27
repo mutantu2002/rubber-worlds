@@ -1,6 +1,8 @@
 package home.mutant.rubber.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import home.mutantu.rubber.model.RubberObject;
 
 import org.junit.Test;

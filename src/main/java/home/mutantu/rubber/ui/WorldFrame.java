@@ -31,7 +31,6 @@ public class WorldFrame extends JFrame implements KeyListener
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	drawingPanel = new RasterPanel (this.width,this.height);
         add (drawingPanel);
-        drawingPanel.init();
         setVisible(true);
         addKeyListener(this);
     }

@@ -23,11 +23,12 @@ public class RasterPanel extends JPanel
 	{
 		this.width = width;
 		this.height = height;
+		init();
 	}
 
 	int [] pixels;
 	
-	public void init ()  
+	private void init ()  
 	{
 		int numPixels = (width) * (height);
 		
@@ -46,16 +47,10 @@ public class RasterPanel extends JPanel
 	    g.drawImage (image, 0, 0, this);
 	}
 
-	public void setPixel(int x, int y)
-	{
-		
-	}
-
 	public void empty()
 	{
 		Arrays.fill(pixels, 0xFF999999);
 	}
-
 
 	public void set4Pixels(int x, int y, int x0) 
 	{
@@ -83,6 +78,7 @@ public class RasterPanel extends JPanel
 	
 	public void drawObjectContour(List<RubberPoint> points, int x0)
 	{
+		if (points == null || points.size()<2) return;
 		Graphics g = image.getGraphics();
 		int size = points.size();
 		RubberPoint point = points.get(0);

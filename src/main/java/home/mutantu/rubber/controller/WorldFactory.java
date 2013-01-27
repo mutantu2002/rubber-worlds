@@ -1,7 +1,10 @@
 package home.mutantu.rubber.controller;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javax.imageio.ImageIO;
 
@@ -28,6 +31,30 @@ public class WorldFactory
 		return world;
 	}
 	
+	public static RubberWorld createFromFile(String path)
+	{
+		RubberWorld world=null;;
+        FileInputStream fis;
+		try 
+		{
+			fis = new FileInputStream(path);
+	        ObjectInputStream ois = new ObjectInputStream(fis);
+	        world = (RubberWorld) ois.readObject();
+	        ois.close();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		if (world == null) world = new RubberWorld(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+		RubberObject circle = createCircle(200, 100, 8, 20);
+		circle.controllable=true;
+		world.addObject(circle);
+		
+		return world;
+
+	}
 	public static RubberWorld createOneSquareObjectWorld(int initX,int initY,int numberPointsOnEdge, double distance)
 	{
 		RubberWorld world  = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
@@ -97,11 +124,11 @@ public class WorldFactory
 	public static StillRubberObject createStill()
 	{
 		StillRubberObject rect = new StillRubberObject();
-		rect.addPoint(0, 800, rect);
-		rect.addPoint(0, 700, rect);
-		rect.addPoint(1600, 800, rect);
-		rect.addPoint(1600, 600, rect);
-		rect.addPoint(1300, 600, rect);
+		rect.addPoint(0, 800);
+		rect.addPoint(0, 700);
+		rect.addPoint(1600, 800);
+		rect.addPoint(1600, 600);
+		rect.addPoint(1300, 600);
 		rect.computeContour();
 		return rect;
 	}
