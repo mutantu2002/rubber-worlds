@@ -23,6 +23,7 @@ public class RasterPanel extends JPanel
 	{
 		this.width = width;
 		this.height = height;
+		this.setSize(width, height);
 		init();
 	}
 

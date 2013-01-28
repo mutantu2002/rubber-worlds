@@ -7,19 +7,19 @@ import home.mutantu.rubber.model.RubberWorld;
 import home.mutantu.rubber.model.StillRubberObject;
 import home.mutantu.rubber.ui.RasterPanel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollBar;
 
 public class RubberEditor 
 {
-	private static JFrame frame;
+	public static JFrame frame;
 	public RubberWorld world;
-	private RasterPanel drawingPanel;
+	public RasterPanel drawingPanel;
 	
 	public static void main(String[] args) 
 	{
@@ -31,17 +31,25 @@ public class RubberEditor
 		frame = new JFrame("Rubber world editor");
 		frame.setSize(Constants.WORLD_WIDTH+20, Constants.WORLD_HEIGHT+50);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		drawingPanel = new RasterPanel(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
-        world = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
-        StillRubberObject obj = new StillRubberObject();
-        world.addObject(obj);
+		drawingPanel = new RasterPanel(Constants.WORLD_WIDTH*2, Constants.WORLD_HEIGHT);
+		JScrollBar hbar = new JScrollBar(
+                JScrollBar.HORIZONTAL, 30, 20, 0, 300);
+		hbar.addAdjustmentListener(new HBarListener());
+		frame.add(hbar, BorderLayout.SOUTH);
 		drawingPanel.addMouseListener(new PointMouseListener(this));
 		addMenu();
 		frame.add(drawingPanel);
 		frame.setVisible(true);
-		paintWorld();
+		initWorld();
 	}
 	
+	public void initWorld()
+	{
+        world = new RubberWorld(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
+        StillRubberObject obj = new StillRubberObject();
+        world.addObject(obj);
+        paintWorld();
+	}
 	public void paintWorld()
 	{
 		drawingPanel.empty();
@@ -61,20 +69,30 @@ public class RubberEditor
 	
 	private void addMenu()
 	{
-		JMenu file = new JMenu("File");
-		file.setMnemonic('F');
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic('F');
+		
 		JMenuItem saveItem = new JMenuItem("Save");
 		saveItem.setMnemonic('S');
-		file.add(saveItem);
+		fileMenu.add(saveItem);
 		saveItem.addActionListener(new SaveAction(this));
+
+		JMenuItem newItem = new JMenuItem("New");
+		newItem.setMnemonic('N');
+		fileMenu.add(newItem);
+		newItem.addActionListener(new NewAction(this));
+		
+		JMenu objectsMenu = new JMenu("Objects");
+		objectsMenu.setMnemonic('O');
 		
 		JMenuItem newObjectItem = new JMenuItem("New Object");
-		newObjectItem.setMnemonic('P');
-		file.add(newObjectItem);
+		newObjectItem.setMnemonic('J');
+		objectsMenu.add(newObjectItem);
 		newObjectItem.addActionListener(new NewObjectAction(this));
 		
 		JMenuBar bar = new JMenuBar();
 		frame.setJMenuBar(bar);
-		bar.add(file);
+		bar.add(fileMenu);
+		bar.add(objectsMenu);
 	}
 }
