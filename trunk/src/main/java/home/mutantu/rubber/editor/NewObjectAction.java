@@ -4,8 +4,6 @@ import home.mutantu.rubber.model.StillRubberObject;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 
 public class NewObjectAction implements ActionListener {
 

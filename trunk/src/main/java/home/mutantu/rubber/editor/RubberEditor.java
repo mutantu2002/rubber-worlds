@@ -20,6 +20,7 @@ public class RubberEditor
 	public static JFrame frame;
 	public RubberWorld world;
 	public RasterPanel drawingPanel;
+	public HBarListener scrollListener;
 	
 	public static void main(String[] args) 
 	{
@@ -33,8 +34,9 @@ public class RubberEditor
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		drawingPanel = new RasterPanel(Constants.WORLD_WIDTH*2, Constants.WORLD_HEIGHT);
 		JScrollBar hbar = new JScrollBar(
-                JScrollBar.HORIZONTAL, 30, 20, 0, 300);
-		hbar.addAdjustmentListener(new HBarListener());
+                JScrollBar.HORIZONTAL, 0, 20, 0, Constants.WORLD_WIDTH);
+		scrollListener = new HBarListener(this);
+		hbar.addAdjustmentListener(scrollListener);
 		frame.add(hbar, BorderLayout.SOUTH);
 		drawingPanel.addMouseListener(new PointMouseListener(this));
 		addMenu();
@@ -50,6 +52,12 @@ public class RubberEditor
         world.addObject(obj);
         paintWorld();
 	}
+	public void paintWorld(int xOffset)
+	{
+		drawingPanel.xOffset = xOffset;
+		paintWorld();
+	}
+	
 	public void paintWorld()
 	{
 		drawingPanel.empty();
@@ -85,10 +93,15 @@ public class RubberEditor
 		JMenu objectsMenu = new JMenu("Objects");
 		objectsMenu.setMnemonic('O');
 		
-		JMenuItem newObjectItem = new JMenuItem("New Object");
+		JMenuItem newObjectItem = new JMenuItem("New object");
 		newObjectItem.setMnemonic('J');
 		objectsMenu.add(newObjectItem);
 		newObjectItem.addActionListener(new NewObjectAction(this));
+
+		JMenuItem deleteObjectItem = new JMenuItem("Delete object");
+		deleteObjectItem.setMnemonic('D');
+		objectsMenu.add(deleteObjectItem);
+		deleteObjectItem.addActionListener(new DeleteObjectAction(this));
 		
 		JMenuBar bar = new JMenuBar();
 		frame.setJMenuBar(bar);

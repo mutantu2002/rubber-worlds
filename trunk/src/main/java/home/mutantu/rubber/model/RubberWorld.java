@@ -62,5 +62,13 @@ public class RubberWorld implements Serializable
 	public double getHeight()
 	{
 		return height;
+	}
+
+	public void removeObject(int index) 
+	{
+		if (objects.size()>0)
+		{
+			objects.remove(objects.size()-1);
+		}
 	}   
 }

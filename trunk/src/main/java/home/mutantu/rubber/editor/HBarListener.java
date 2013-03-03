@@ -5,11 +5,17 @@ import java.awt.event.AdjustmentListener;
 
 public class HBarListener implements AdjustmentListener 
 {
-
+	private RubberEditor editor;
+	public int position = 0;
+	public HBarListener(RubberEditor rubberEditor) 
+	{
+		this.editor = rubberEditor;
+	}
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) 
 	{
-		System.out.println(e.getValue());
+		position = e.getValue();
+		editor.paintWorld(-e.getValue());
 	}
 
 }

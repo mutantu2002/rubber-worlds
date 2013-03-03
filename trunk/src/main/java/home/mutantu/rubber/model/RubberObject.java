@@ -97,6 +97,10 @@ public class RubberObject implements Serializable
 		{
 			contour = ConvexHull.compute(getPoints());
 		}
+		else
+		{
+			contour = new ArrayList<RubberPoint>();
+		}
 	}
 
 	public List<RubberPoint> get2ClosestPoints(Coordinates coord)
@@ -183,5 +187,11 @@ public class RubberObject implements Serializable
 	{
 		int size = points.size();
 		points.put(size,point);
+	}
+
+	public void clear() 
+	{
+		points.clear();
+		contour = new ArrayList<RubberPoint>();
 	}
 }
