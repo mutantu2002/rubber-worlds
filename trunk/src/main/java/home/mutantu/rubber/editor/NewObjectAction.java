@@ -5,8 +5,8 @@ import home.mutantu.rubber.model.StillRubberObject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NewObjectAction implements ActionListener {
-
+public class NewObjectAction implements ActionListener 
+{
 	private RubberEditor editor;
 
 	public NewObjectAction(RubberEditor rubberEditor) 
