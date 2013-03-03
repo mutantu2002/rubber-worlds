@@ -28,6 +28,7 @@ public class RasterPanel extends JPanel
 	}
 
 	int [] pixels;
+	public int xOffset = 0;
 	
 	private void init ()  
 	{
@@ -45,7 +46,7 @@ public class RasterPanel extends JPanel
 
 	public void paintComponent (Graphics g) 
 	{
-	    g.drawImage (image, 0, 0, this);
+	    g.drawImage (image, xOffset, 0, this);
 	}
 
 	public void empty()
